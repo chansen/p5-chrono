@@ -1,0 +1,59 @@
+=head1 NAME
+
+Chrono::Duration - 
+
+=head1 SYNOPSIS
+
+    $duration = Chrono::Duration->new(
+        days         => 1,
+        hours        => 24,
+        minutes      => 1440,
+        seconds      => 86400,
+        microseconds => 86400000000
+    );
+    
+    $duration = Chrono::Duration->zero;
+    $duration = Chrono::Duration->from_days($days);
+    $duration = Chrono::Duration->from_hours($hours);
+    $duration = Chrono::Duration->from_minutes($minutes);
+    $duration = Chrono::Duration->from_seconds($seconds);
+    $duration = Chrono::Duration->from_milliseconds($milliseconds);
+    $duration = Chrono::Duration->from_microseconds($microseconds);
+    
+    $days         = $duration->days;
+    $hours        = $duration->hours;
+    $minutes      = $duration->minutes;
+    $seconds      = $duration->seconds;
+    $milliseconds = $duration->milliseconds;
+    
+    $days         = $duration->total_days;
+    $hours        = $duration->total_hours;
+    $minutes      = $duration->total_minutes;
+    $seconds      = $duration->total_seconds;
+    $milliseconds = $duration->total_milliseconds;
+    
+    $boolean      = $duration->is_zero;
+    $boolean      = $duration->is_positive;
+    $boolean      = $duration->is_negative;
+    
+    $result       = $duration1->compare($duration2);
+    
+    $duration2    = $duration1->abs;
+    $duration2    = $duration1->negate;
+    
+    $duration2    = $duration1->add_days($days);
+    $duration2    = $duration1->add_hours($hours);
+    $duration2    = $duration1->add_minutes($minutes);
+    $duration2    = $duration1->add_seconds($seconds);
+    $duration2    = $duration1->add_milliseconds($milliseconds);
+    $duration2    = $duration1->add_microseconds($microseconds);
+    
+    $duration3    = $duration1->add_duration($duration2);
+    $duration3    = $duration1->subtract_duration($duration2);
+
+=head1 DESCRIPTION
+
+=head1 CONSTRUCTORS
+
+=head1 METHODS
+

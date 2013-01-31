@@ -1,0 +1,75 @@
+=head1 NAME
+
+Chrono::Date - 
+
+=head1 SYNOPSIS
+
+    $date = Chrono::Date->new(
+        year  => 2013, 
+        month => 12, 
+        day   => 24
+    );
+    
+    $date = Chrono::Date->from_yd($y, $d);          # Ordinal date
+    $date = Chrono::Date->from_ymd($y, $m, $d);     # Calendar date
+    $date = Chrono::Date->from_yqd($y, $q, $d);     # Quarter date
+    $date = Chrono::Date->from_ywd($y, $w, $d);     # Week date
+    $date = Chrono::Date->from_cjdn($cjdn);         # Chronological Julian day
+    $date = Chrono::Date->from_rdn($rdn);           # Rata Die day
+    $date = Chrono::Date->from_string($string);     # Any ISO 8601 date
+    
+    $year     = $date->year;                        # [ 1 .. 9999 ]
+    $quarter  = $date->quarter;                     # [ 1 .. 4 ]
+    $month    = $date->month;                       # [ 1 .. 12 ]
+    $week     = $date->week;                        # [ 1 .. 53 ]
+    
+    $day      = $date->day_of_year;                 # [ 1 .. 366 ]
+    $day      = $date->day_of_quarter;              # [ 1 .. 92 ]
+    $day      = $date->day_of_month;                # [ 1 .. 31 ]
+    $day      = $date->day_of_week;                 # [ 1=Monday .. 7=Sunday ]
+    
+    $cjdn     = $date->cjdn;                        # Chronological Julian day
+    $rdn      = $date->rdn;                         # Rata Die day
+    
+    $string   = $date->to_string;                   # YYYY-MM-DD
+    @yd       = $date->to_yd                        # XXX ?
+    @ymd      = $date->to_ymd                       # XXX ?
+    @yqd      = $date->to_yqd                       # XXX ?
+    @ywd      = $date->to_ywd                       # XXX ?
+    
+    $datetime = $date->at_time($time);              # Chrono::Time
+    
+    $boolean  = $date1->is_before($date2);
+    $boolean  = $date1->is_after($date2);
+    $boolean  = $date1->is_equal($date2);
+    
+    $integer  = $date1->compare($date2);
+    
+    $date2    = $date1->with_year($year);
+    $date2    = $date1->with_quarter($quarter);
+    $date2    = $date1->with_month($month);
+    $date2    = $date1->with_week($week);
+    
+    $date2    = $date1->with_day_of_year($day);
+    $date2    = $date1->with_day_of_quarter($day);
+    $date2    = $date1->with_day_of_month($day);
+    $date2    = $date1->with_day_of_week($day);
+    
+    $years    = $date1->delta_years($date2);
+    $quarters = $date1->delta_quarters($date2);
+    $months   = $date1->delta_months($date2);
+    $weeks    = $date1->delta_weeks($date2);
+    $days     = $date1->delta_days($date2);
+    
+    $date2    = $date1->add_years($years);
+    $date2    = $date1->add_quarters($quarters);
+    $date2    = $date1->add_months($months);
+    $date2    = $date1->add_weeks($weeks);
+    $date2    = $date1->add_days($days);
+
+=head1 DESCRIPTION
+
+=head1 CONSTRUCTORS
+
+=head1 METHODS
+

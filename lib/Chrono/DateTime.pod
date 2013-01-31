@@ -1,0 +1,106 @@
+=head1 NAME
+
+Chrono::DateTime - 
+
+=head1 SYNOPSIS
+
+    $datetime = Chrono::DateTime->new(
+        year        => 2013, 
+        month       => 12, 
+        day         => 24, 
+        hour        => 23, 
+        minute      => 59,
+        second      => 59,
+        microsecond => 123456
+    );
+    
+    $datetime = Chrono::DateTime->from_date($date [, $time]);
+    $datetime = Chrono::DateTime->from_epoch($seconds [, $microsecond]);
+    
+    $year         = $datetime->year;                    # [ 1 .. 9999 ]
+    $quarter      = $datetime->quarter;                 # [ 1 .. 4 ]
+    $month        = $datetime->month;                   # [ 1 .. 12 ]
+    $week         = $datetime->week;                    # [ 1 .. 53 ]
+    
+    $day          = $datetime->day_of_year;             # [ 1 .. 366 ]
+    $day          = $datetime->day_of_quarter;          # [ 1 .. 92 ]
+    $day          = $datetime->day_of_month;            # [ 1 .. 31 ]
+    $day          = $datetime->day_of_week;             # [ 1=Monday .. 7=Sunday ]
+    
+    $hour         = $datetime->hour;                    # [ 0 .. 23 ]
+    $minute       = $datetime->minute;                  # [ 0 .. 59 ]
+    $second       = $datetime->second;                  # [ 0 .. 59 ]
+    $millisecond  = $datetime->millisecond;             # [ 0 .. 999 ]
+    $microsecond  = $datetime->microsecond;             # [ 0 .. 999_999 ]
+    
+    $seconds      = $datetime->epoch;                   # Unix epoch seconds
+    
+    $cjd          = $datetime->cjd;                     # Chronological Julian date
+    $cjdn         = $datetime->cjdn;                    # Chronological Julian day
+    $rdn          = $datetime->rdn;                     # Rata Die day
+    
+    $string       = $datetime->to_string;               # YYYY-MM-DDThh:mm:ss.ffffff
+    
+    $boolean      = $datetime1->is_before($datetime2);
+    $boolean      = $datetime1->is_after($datetime2);
+    $boolean      = $datetime1->is_equal($datetime2);
+    
+    $integer      = $datetime1->compare($datetime2);
+    
+    $date         = $datetime->date;                    # Chrono::Date
+    $time         = $datetime->time;                    # Chrono::Time
+    
+    $datetime2    = $datetime1->with_date($date);       # Chrono::Date
+    $datetime2    = $datetime1->with_time($time);       # Chrono::Time
+    
+    $datetime2    = $datetime1->with_year($year);
+    $datetime2    = $datetime1->with_quarter($quarter);
+    $datetime2    = $datetime1->with_month($month);
+    $datetime2    = $datetime1->with_week($week);
+    
+    $datetime2    = $datetime1->with_day_of_year($day);
+    $datetime2    = $datetime1->with_day_of_quarter($day);
+    $datetime2    = $datetime1->with_day_of_month($day);
+    $datetime2    = $datetime1->with_day_of_week($day);
+    
+    $datetime2    = $datetime1->with_hour($hour);
+    $datetime2    = $datetime1->with_minute($minute);
+    $datetime2    = $datetime1->with_second($second);
+    $datetime2    = $datetime1->with_microsecond($microsecond);
+    
+    $years        = $datetime1->delta_years($datetime2);
+    $quarters     = $datetime1->delta_quarters($datetime2);
+    $months       = $datetime1->delta_months($datetime2);
+    $weeks        = $datetime1->delta_weeks($datetime2);
+    $days         = $datetime1->delta_days($datetime2);
+    $hours        = $datetime1->delta_hours($datetime2);
+    $minutes      = $datetime1->delta_minutes($datetime2);
+    $seconds      = $datetime1->delta_seconds($datetime2);
+    
+    $datetime2    = $datetime1->add_years($years);
+    $datetime2    = $datetime1->add_quarters($quarters);
+    $datetime2    = $datetime1->add_months($months);
+    $datetime2    = $datetime1->add_weeks($weeks);
+    $datetime2    = $datetime1->add_days($days);
+    $datetime2    = $datetime1->add_hours($hours);
+    $datetime2    = $datetime1->add_minutes($minutes);
+    $datetime2    = $datetime1->add_seconds($seconds);
+    $datetime2    = $datetime1->add_milliseconds($milliseconds);
+    $datetime2    = $datetime1->add_microseconds($microseconds);
+    
+    $duration     = $datetime1->subtract_datetime($datetime2);  # Chrono::Duration
+    
+    $datetime2    = $datetime1->add_duration($duration);
+    $datetime2    = $datetime1->subtract_duration($duration);
+    
+    @values       = $datetime->local_rd_values;
+    $seconds      = $datetime->local_rd_as_seconds;
+    @values       = $datetime->utc_rd_values;
+    $seconds      = $datetime->utc_rd_as_seconds;
+
+=head1 DESCRIPTION
+
+=head1 CONSTRUCTORS
+
+=head1 METHODS
+

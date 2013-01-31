@@ -1,0 +1,63 @@
+=head1 NAME
+
+Chrono::Time - 
+
+=head1 SYNOPSIS
+
+    $time = Chrono::Time->new(
+        hour        => 23,
+        minute      => 59,
+        second      => 59,
+        microsecond => 999999
+    );
+    
+    $time = Chrono::Time->noon;
+    $time = Chrono::Time->midnight;
+    $time = Chrono::Time->from_hms($hour, $minute, $second [, $microsecond]);
+    
+    $hour         = $time->hour;                    # [ 0 .. 23 ]
+    $minute       = $time->minute;                  # [ 0 .. 59 ]
+    $second       = $time->second;                  # [ 0 .. 59 ]
+    $millisecond  = $time->millisecond;             # [ 0 .. 999 ]
+    $microsecond  = $time->microsecond;             # [ 0 .. 999_999 ]
+    
+    $string       = $time->to_string;               # hh:mm:ss.ffffff
+    
+    $datetime     = $time->at_date($date);          # Chrono::Date
+    
+    $boolean      = $time1->is_before($time2);
+    $boolean      = $time1->is_after($time2);
+    $boolean      = $time1->is_equal($time2);
+    
+    $integer      = $time1->compare($time2);
+    
+    $time2        = $time1->with_hour($hour);
+    $time2        = $time1->with_minute($minute);
+    $time2        = $time1->with_second($second);
+    $time2        = $time1->with_microsecond($microsecond);
+    
+    $hours        = $time1->delta_hours($time2);
+    $minutes      = $time1->delta_minutes($time2);
+    $seconds      = $time1->delta_seconds($time2);
+    $milliseconds = $time1->delta_milliseconds($time2);
+    $microseconds = $time1->delta_microseconds($time2);
+    
+    $time2        = $time1->add_hours($hours);
+    $time2        = $time1->add_minutes($minutes);
+    $time2        = $time1->add_seconds($seconds);
+    $time2        = $time1->add_milliseconds($milliseconds);
+    $time2        = $time1->add_microseconds($microseconds);
+    
+    $duration     = $time1->subtract_time($time2);          # XXX ?
+    
+    $time2        = $time1->add_duration($duration);        # XXX ?
+    $time2        = $time1->subtract_duration($duration);   # XXX ?
+
+=head1 DESCRIPTION
+
+=head1 CONSTRUCTORS
+
+=head1 METHODS
+
+
+
