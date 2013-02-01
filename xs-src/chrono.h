@@ -460,6 +460,13 @@ THX_chrono_date_to_string(pTHX_ chrono_date_t d) {
     return THX_chrono_date_format_ymd(aTHX_ d, dsv);
 }
 
+static void
+chrono_date_swap(chrono_date_t *d1, chrono_date_t *d2) {
+    const chrono_date_t tmp = *d1;
+    *d1 = *d2;
+    *d2 = tmp;
+}
+
 /* Chrono::Time */
 
 static chrono_time_t
@@ -657,6 +664,13 @@ THX_chrono_time_to_string(pTHX_ chrono_time_t t, IV precision) {
     return THX_chrono_time_format_hmsu(aTHX_ t, dsv, precision);
 }
 
+static void
+chrono_time_swap(chrono_time_t *t1, chrono_time_t *t2) {
+    const chrono_time_t tmp = *t1;
+    *t1 = *t2;
+    *t2 = tmp;
+}
+
 /* Chrono::DateTime */
 
 static chrono_datetime_t
@@ -757,6 +771,13 @@ THX_chrono_datetime_to_string(pTHX_ chrono_datetime_t dt, IV precision) {
         croak("Parameter 'precision' is out of the range [0, 6]");
     dsv = sv_newmortal();
     return THX_chrono_datetime_format_ymdhmsu(aTHX_ dt, dsv, precision);
+}
+
+static void
+chrono_datetime_swap(chrono_datetime_t *d1, chrono_datetime_t *d2) {
+    const chrono_datetime_t tmp = *d1;
+    *d1 = *d2;
+    *d2 = tmp;
 }
 
 /* Chrono::Duration */
