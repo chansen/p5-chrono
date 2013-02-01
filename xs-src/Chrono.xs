@@ -30,6 +30,10 @@ typedef int64_t I64V;
 #define XSRETURN_BOOL(v) STMT_START { ST(0) = boolSV(v); XSRETURN(1); } STMT_END
 #endif
 
+#ifndef cBOOL
+#define cBOOL(cbool) ((cbool) ? (bool)1 : (bool)0)
+#endif
+
 #define MY_CXT_KEY "Chrono::_guts" XS_VERSION
 typedef struct {
     HV *stash_date;
@@ -271,13 +275,13 @@ THX_croak_cmp(pTHX_ SV *sv1, SV *sv2, const bool swap, const char *name) {
     THX_croak_cmp(aTHX_ sv1, sv2, swap, name)
 
 XS(XS_Chrono_nil) {
-    dXSARGS;
+    dVAR; dXSARGS;
     PERL_UNUSED_VAR(items);
     XSRETURN_EMPTY;
 }
 
 XS(XS_Chrono_Date_stringify) {
-    dXSARGS;
+    dVAR; dXSARGS;
     if (items < 1)
         croak("Wrong number of arguments to Chrono::Date::(\"\"");
     ST(0) = chrono_date_to_string(sv_2chrono_date(ST(0), "self"));
@@ -285,7 +289,7 @@ XS(XS_Chrono_Date_stringify) {
 }
 
 XS(XS_Chrono_Time_stringify) {
-    dXSARGS;
+    dVAR; dXSARGS;
     if (items < 1)
         croak("Wrong number of arguments to Chrono::Time::(\"\"");
     ST(0) = chrono_time_to_string(sv_2chrono_time(ST(0), "self"), 6);
@@ -293,7 +297,7 @@ XS(XS_Chrono_Time_stringify) {
 }
 
 XS(XS_Chrono_DateTime_stringify) {
-    dXSARGS;
+    dVAR; dXSARGS;
     if (items < 1)
         croak("Wrong number of arguments to Chrono::DateTime::(\"\"");
     ST(0) = chrono_datetime_to_string(sv_2chrono_datetime(ST(0), "self"), 6);
@@ -301,7 +305,7 @@ XS(XS_Chrono_DateTime_stringify) {
 }
 
 XS(XS_Chrono_Date_ncmp) {
-    dXSARGS;
+    dVAR; dXSARGS;
     SV *svd1, *svd2;
     bool swap;
     chrono_date_t d1, d2;
@@ -323,7 +327,7 @@ XS(XS_Chrono_Date_ncmp) {
 }
 
 XS(XS_Chrono_Time_ncmp) {
-    dXSARGS;
+    dVAR; dXSARGS;
     SV *svt1, *svt2;
     bool swap;
     chrono_time_t t1, t2;
@@ -345,7 +349,7 @@ XS(XS_Chrono_Time_ncmp) {
 }
 
 XS(XS_Chrono_DateTime_ncmp) {
-    dXSARGS;
+    dVAR; dXSARGS;
     SV *svdt1, *svdt2;
     bool swap;
     chrono_datetime_t dt1, dt2;
