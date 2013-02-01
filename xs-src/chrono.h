@@ -629,13 +629,14 @@ THX_chrono_time_format_hmsu(pTHX_ chrono_time_t t, SV *dsv, IV precision) {
         *p++ = '.';
         n = chrono_time_microsecond(t);
         switch (precision) {
-            case 6: *p++ = C(n, 100000);
-            case 5: *p++ = C(n, 10000);
-            case 4: *p++ = C(n, 1000);
-            case 3: *p++ = C(n, 100);
-            case 2: *p++ = C(n, 10);
-            case 1: *p++ = C(n, 1);
+            case 6: p[5] = C(n, 1);
+            case 5: p[4] = C(n, 10);
+            case 4: p[3] = C(n, 100);
+            case 3: p[2] = C(n, 1000);
+            case 2: p[1] = C(n, 10000);
+            case 1: p[0] = C(n, 100000);
         }
+        p += precision;
     }
     *p = 0;
 
