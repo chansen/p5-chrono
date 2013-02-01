@@ -168,6 +168,31 @@ THX_stash_constructor(pTHX_ SV *sv, const char *name, STRLEN namelen, HV *stash)
     return gv_stashpvn(pv, len, GV_ADD);
 }
 
+static void
+THX_croak_cmp(pTHX_ SV *sv1, SV *sv2, const bool swap, const char *name) {
+    if (sv_isobject(sv1)) {
+        const char *name = sv_reftype(SvRV(sv1), 1);
+        const char *type = sv_reftype(SvRV(sv1), 0);
+        SV *dsv = sv_newmortal();
+        sv_setpvf(dsv, "%s=%s(0x%p)", name, type, SvRV(sv1));
+        sv1 = dsv;
+    }
+    if (sv_isobject(sv2)) {
+        const char *name = sv_reftype(SvRV(sv2), 1);
+        const char *type = sv_reftype(SvRV(sv2), 0);
+        SV *dsv = sv_newmortal();
+        sv_setpvf(dsv, "%s=%s(0x%p)", name, type, SvRV(sv2));
+        sv2 = dsv;
+    }
+    if (swap) {
+        SV * const tmp = sv1;
+        sv1 = sv2;
+        sv2 = tmp;
+    }
+    croak("A %s object can only be compared to another %s object ('%"SVf"', '%"SVf"')",
+        name, name, sv1, sv2);
+}
+
 #define dSTASH_CONSTRUCTOR(sv, name, dstash) \
     HV * const stash = THX_stash_constructor(aTHX_ sv, STR_WITH_LEN(name), dstash)
 
@@ -242,6 +267,9 @@ THX_stash_constructor(pTHX_ SV *sv, const char *name, STRLEN namelen, HV *stash)
 #define sv_2chrono_duration(sv, name) \
     THX_sv_2chrono_duration(aTHX_ sv, name)
 
+#define croak_cmp(sv1, sv2, swap, name) \
+    THX_croak_cmp(aTHX_ sv1, sv2, swap, name)
+
 XS(XS_Chrono_nil) {
     dXSARGS;
     PERL_UNUSED_VAR(items);
@@ -272,58 +300,70 @@ XS(XS_Chrono_DateTime_stringify) {
     XSRETURN(1);
 }
 
-XS(XS_Chrono_Date_cmp) {
+XS(XS_Chrono_Date_ncmp) {
     dXSARGS;
-    chrono_date_t lhs, rhs;
-    IV res;
+    SV *svd1, *svd2;
+    bool swap;
+    chrono_date_t d1, d2;
+
     if (items < 3)
         croak("Wrong number of arguments to Chrono::Date::(<=>");
-    lhs = sv_2chrono_date(ST(0), "self");
-    if (cBOOL(SvTRUE(ST(2)))) {
-        rhs = sv_2chrono_date(ST(1), "left-hand side");
-        res = chrono_date_compare(rhs, lhs);
-    }
-    else {
-        rhs = sv_2chrono_date(ST(1), "right-hand side");
-        res = chrono_date_compare(lhs, rhs);
-    }
-    XSRETURN_IV(res);
+
+    svd1 = ST(0);
+    svd2 = ST(1);
+    swap = cBOOL(SvTRUE(ST(2)));
+
+    if (!sv_isa_chrono_date(svd2))
+        croak_cmp(svd1, svd2, swap, "Chrono::Date");
+    d1 = sv_2chrono_date(svd1, "self");
+    d2 = sv_2chrono_date(svd2, "other");
+    if (swap)
+        chrono_date_swap(&d1, &d2);
+    XSRETURN_IV(chrono_date_compare(d1, d2));
 }
 
-XS(XS_Chrono_Time_cmp) {
+XS(XS_Chrono_Time_ncmp) {
     dXSARGS;
-    chrono_time_t lhs, rhs;
-    IV res;
+    SV *svt1, *svt2;
+    bool swap;
+    chrono_time_t t1, t2;
+
     if (items < 3)
         croak("Wrong number of arguments to Chrono::Time::(<=>");
-    lhs = sv_2chrono_time(ST(0), "self");
-    if (cBOOL(SvTRUE(ST(2)))) {
-        rhs = sv_2chrono_time(ST(1), "left-hand side");
-        res = chrono_time_compare(rhs, lhs);
-    }
-    else {
-        rhs = sv_2chrono_time(ST(1), "right-hand side");
-        res = chrono_time_compare(lhs, rhs);
-    }
-    XSRETURN_IV(res);
+
+    svt1 = ST(0);
+    svt2 = ST(1);
+    swap = cBOOL(SvTRUE(ST(2)));
+
+    if (!sv_isa_chrono_time(svt2))
+        croak_cmp(svt1, svt2, swap, "Chrono::Time");
+    t1 = sv_2chrono_time(svt1, "self");
+    t2 = sv_2chrono_time(svt2, "other");
+    if (swap)
+        chrono_time_swap(&t1, &t2);
+    XSRETURN_IV(chrono_time_compare(t1, t2));
 }
 
-XS(XS_Chrono_DateTime_cmp) {
+XS(XS_Chrono_DateTime_ncmp) {
     dXSARGS;
-    chrono_datetime_t lhs, rhs;
-    IV res;
+    SV *svdt1, *svdt2;
+    bool swap;
+    chrono_datetime_t dt1, dt2;
+
     if (items < 3)
         croak("Wrong number of arguments to Chrono::DateTime::(<=>");
-    lhs = sv_2chrono_datetime(ST(0), "self");
-    if (cBOOL(SvTRUE(ST(2)))) {
-        rhs = sv_2chrono_datetime(ST(1), "left-hand side");
-        res = chrono_datetime_compare(rhs, lhs);
-    }
-    else {
-        rhs = sv_2chrono_datetime(ST(1), "right-hand side");
-        res = chrono_datetime_compare(lhs, rhs);
-    }
-    XSRETURN_IV(res);
+
+    svdt1 = ST(0);
+    svdt2 = ST(1);
+    swap = cBOOL(SvTRUE(ST(2)));
+
+    if (!sv_isa_chrono_datetime(svdt2))
+        croak_cmp(svdt1, svdt2, swap, "Chrono::DateTime");
+    dt1 = sv_2chrono_datetime(svdt1, "self");
+    dt2 = sv_2chrono_datetime(svdt2, "other");
+    if (swap)
+        chrono_datetime_swap(&dt1, &dt2);
+    XSRETURN_IV(chrono_datetime_compare(dt1, dt2));
 }
 
 MODULE = Chrono   PACKAGE = Chrono
@@ -342,13 +382,13 @@ BOOT:
     sv_setsv(get_sv("Chrono::DateTime::()", GV_ADD), &PL_sv_yes);
     newXS("Chrono::Date::()", XS_Chrono_nil, file);
     newXS("Chrono::Date::(\"\"", XS_Chrono_Date_stringify, file);
-    newXS("Chrono::Date::(<=>", XS_Chrono_Date_cmp, file);
+    newXS("Chrono::Date::(<=>", XS_Chrono_Date_ncmp, file);
     newXS("Chrono::Time::()", XS_Chrono_nil, file);
     newXS("Chrono::Time::(\"\"", XS_Chrono_Time_stringify, file);
-    newXS("Chrono::Time::(<=>", XS_Chrono_Time_cmp, file);
+    newXS("Chrono::Time::(<=>", XS_Chrono_Time_ncmp, file);
     newXS("Chrono::DateTime::()", XS_Chrono_nil, file);
     newXS("Chrono::DateTime::(\"\"", XS_Chrono_DateTime_stringify, file);
-    newXS("Chrono::DateTime::(<=>", XS_Chrono_DateTime_cmp, file);
+    newXS("Chrono::DateTime::(<=>", XS_Chrono_DateTime_ncmp, file);
 }
 
 #ifdef USE_ITHREADS
