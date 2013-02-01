@@ -131,28 +131,28 @@ static chrono_date_t
 THX_sv_2chrono_date(pTHX_ SV *sv, const char *name) {
     if (!THX_sv_isa_chrono_date(aTHX_ sv))
         croak("%s is not an instance of Chrono::Date", name);
-    return *(const chrono_date_t *)SvPVX(SvRV(sv));
+    return *(const chrono_date_t *)SvPVX_const(SvRV(sv));
 }
 
 static chrono_time_t
 THX_sv_2chrono_time(pTHX_ SV *sv, const char *name) {
     if (!THX_sv_isa_chrono_time(aTHX_ sv))
         croak("%s is not an instance of Chrono::Time", name);
-    return *(const chrono_time_t *)SvPVX(SvRV(sv));
+    return *(const chrono_time_t *)SvPVX_const(SvRV(sv));
 }
 
 static chrono_datetime_t
 THX_sv_2chrono_datetime(pTHX_ SV *sv, const char *name) {
     if (!THX_sv_isa_chrono_datetime(aTHX_ sv))
         croak("%s is not an instance of Chrono::DateTime", name);
-    return *(const chrono_datetime_t *)SvPVX(SvRV(sv));
+    return *(const chrono_datetime_t *)SvPVX_const(SvRV(sv));
 }
 
 static chrono_duration_t
 THX_sv_2chrono_duration(pTHX_ SV *sv, const char *name) {
     if (!THX_sv_isa_chrono_duration(aTHX_ sv))
         croak("%s is not an instance of Chrono::Duration", name);
-    return *(const chrono_duration_t *)SvPVX(SvRV(sv));
+    return *(const chrono_duration_t *)SvPVX_const(SvRV(sv));
 }
 
 static HV *
