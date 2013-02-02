@@ -75,6 +75,7 @@ days(self)
     Chrono::Duration::minutes      = 2
     Chrono::Duration::seconds      = 3
     Chrono::Duration::milliseconds = 4
+    Chrono::Duration::microseconds = 5
   PREINIT:
     int64_t v = 0;
   CODE:
@@ -84,6 +85,7 @@ days(self)
         case 2: v = chrono_duration_minutes(self);         break;
         case 3: v = chrono_duration_seconds(self);         break;
         case 4: v = chrono_duration_milliseconds(self);    break;
+        case 5: v = chrono_duration_microseconds(self);    break;
     }
     XSRETURN_I64V(v);
 
@@ -109,7 +111,7 @@ total_days(self)
     XSRETURN_NV(v);
 
 chrono_duration_t
-add_weeks(self, delta)
+add_days(self, delta)
     const chrono_duration_t self
     I64V delta
   ALIAS:
