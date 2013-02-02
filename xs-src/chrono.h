@@ -904,9 +904,19 @@ chrono_duration_seconds(chrono_duration_t d) {
     return (int64_t)(d / USECS_PER_SECOND);
 }
 
+static IV
+chrono_duration_millisecond(chrono_duration_t d) {
+    return (d / USECS_PER_MILLISECOND) % 1000;
+}
+
 static int64_t
 chrono_duration_milliseconds(chrono_duration_t d) {
     return (int64_t)(d / USECS_PER_MILLISECOND);
+}
+
+static IV
+chrono_duration_microsecond(chrono_duration_t d) {
+    return (d % USECS_PER_SECOND);
 }
 
 static int64_t

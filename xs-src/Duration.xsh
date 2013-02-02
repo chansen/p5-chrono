@@ -76,6 +76,8 @@ days(self)
     Chrono::Duration::seconds      = 3
     Chrono::Duration::milliseconds = 4
     Chrono::Duration::microseconds = 5
+    Chrono::Duration::millisecond  = 6
+    Chrono::Duration::microsecond  = 7
   PREINIT:
     int64_t v = 0;
   CODE:
@@ -86,6 +88,8 @@ days(self)
         case 3: v = chrono_duration_seconds(self);         break;
         case 4: v = chrono_duration_milliseconds(self);    break;
         case 5: v = chrono_duration_microseconds(self);    break;
+        case 6: v = chrono_duration_millisecond(self);     break;
+        case 7: v = chrono_duration_microsecond(self);     break;
     }
     XSRETURN_I64V(v);
 
