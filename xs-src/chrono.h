@@ -179,6 +179,40 @@ chrono_duration_param(const char *s, STRLEN len) {
 }
 
 
+#define CHR(n, d) (char)('0' + ((n) / (d)) % 10)
+
+static char *
+chrono_format_number(char *d, const UV n, const size_t len) {
+    switch (len) {
+        case 6: d[len - 6] = CHR(n, 100000);
+        case 5: d[len - 5] = CHR(n, 10000);
+        case 4: d[len - 4] = CHR(n, 1000);
+        case 3: d[len - 3] = CHR(n, 100);
+        case 2: d[len - 2] = CHR(n, 10);
+        case 1: d[len - 1] = CHR(n, 1);
+            d += len;
+            break;
+    }
+    return d;
+}
+
+static char *
+chrono_format_microsecond(char *d, const UV n, const size_t len) {
+    switch (len) {
+        case 6: d[5] = CHR(n, 1);
+        case 5: d[4] = CHR(n, 10);
+        case 4: d[3] = CHR(n, 100);
+        case 3: d[2] = CHR(n, 1000);
+        case 2: d[1] = CHR(n, 10000);
+        case 1: d[0] = CHR(n, 100000);
+            d += len;
+            break;
+    }
+    return d;
+}
+
+#undef CHR
+
 /* Chrono::Date */
 
 static chrono_date_t
@@ -422,7 +456,7 @@ chrono_date_compare(chrono_date_t d1, chrono_date_t d2) {
     return 0;
 }
 
-SV *
+static SV *
 THX_chrono_date_format_ymd(pTHX_ chrono_date_t date, SV *dsv) {
     int y, m, d;
     char *p;
@@ -431,29 +465,20 @@ THX_chrono_date_format_ymd(pTHX_ chrono_date_t date, SV *dsv) {
     (void)SvGROW(dsv, SvCUR(dsv) + 10 + 1);
     p = SvPVX(dsv) + SvCUR(dsv);
 
-    #define C(n, d) (char)('0' + ((n) / (d)) % 10)
-
     dt_to_ymd(date, &y, &m, &d);
-    *p++ = C(y, 1000);
-    *p++ = C(y, 100);
-    *p++ = C(y, 10);
-    *p++ = C(y, 1);
+    p = chrono_format_number(p, (UV)y, 4);
     *p++ = '-';
-    *p++ = C(m, 10);
-    *p++ = C(m, 1);
+    p = chrono_format_number(p, (UV)m, 2);
     *p++ = '-';
-    *p++ = C(d, 10);
-    *p++ = C(d, 1);
+    p = chrono_format_number(p, (UV)d, 2);
     *p = 0;
-
-    #undef C
 
     SvCUR_set(dsv, p - SvPVX(dsv));
     SvPOK_only(dsv);
     return dsv;
 }
 
-SV *
+static SV *
 THX_chrono_date_to_string(pTHX_ chrono_date_t d) {
     SV *dsv;
     dsv = sv_newmortal();
@@ -610,51 +635,29 @@ chrono_time_compare(chrono_time_t t1, chrono_time_t t2) {
     return 0;
 }
 
-SV *
+static SV *
 THX_chrono_time_format_hmsu(pTHX_ chrono_time_t t, SV *dsv, IV precision) {
-    IV n;
     char *p;
 
     (void)SvUPGRADE(dsv, SVt_PV);
     (void)SvGROW(dsv, SvCUR(dsv) + 15 + 1);
     p = SvPVX(dsv) + SvCUR(dsv);
 
-    #define C(n, d) (char)('0' + ((n) / (d)) % 10)
-
-    n = chrono_time_hour(t);
-    *p++ = C(n, 10);
-    *p++ = C(n, 1);
+    p = chrono_format_number(p, (UV)chrono_time_hour(t), 2);
     *p++ = ':';
-    n = chrono_time_minute(t);
-    *p++ = C(n, 10);
-    *p++ = C(n, 1);
+    p = chrono_format_number(p, (UV)chrono_time_minute(t), 2);
     *p++ = ':';
-    n = chrono_time_second(t);
-    *p++ = C(n, 10);
-    *p++ = C(n, 1);
+    p = chrono_format_number(p, (UV)chrono_time_second(t), 2);
     if (precision > 0) {
         *p++ = '.';
-        n = chrono_time_microsecond(t);
-        switch (precision) {
-            case 6: p[5] = C(n, 1);
-            case 5: p[4] = C(n, 10);
-            case 4: p[3] = C(n, 100);
-            case 3: p[2] = C(n, 1000);
-            case 2: p[1] = C(n, 10000);
-            case 1: p[0] = C(n, 100000);
-        }
-        p += precision;
+        p = chrono_format_microsecond(p, (UV)chrono_time_microsecond(t), (size_t)precision);
     }
-    *p = 0;
-
-    #undef C
-
     SvCUR_set(dsv, p - SvPVX(dsv));
     SvPOK_only(dsv);
     return dsv;
 }
 
-SV *
+static SV *
 THX_chrono_time_to_string(pTHX_ chrono_time_t t, IV precision) {
     SV *dsv;
 
@@ -752,7 +755,7 @@ chrono_datetime_compare(chrono_datetime_t dt1, chrono_datetime_t dt2) {
     return 0;
 }
 
-SV *
+static SV *
 THX_chrono_datetime_format_ymdhmsu(pTHX_ chrono_datetime_t dt, SV *dsv, IV precision) {
     chrono_date_t date = chrono_datetime_date(dt);
     chrono_time_t time = chrono_datetime_time(dt);
@@ -763,7 +766,7 @@ THX_chrono_datetime_format_ymdhmsu(pTHX_ chrono_datetime_t dt, SV *dsv, IV preci
     return dsv;
 }
 
-SV *
+static SV *
 THX_chrono_datetime_to_string(pTHX_ chrono_datetime_t dt, IV precision) {
     SV *dsv;
 
