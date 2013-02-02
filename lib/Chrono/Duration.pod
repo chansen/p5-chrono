@@ -25,6 +25,7 @@ Chrono::Duration -
     $minutes      = $duration->minutes;
     $seconds      = $duration->seconds;
     $milliseconds = $duration->milliseconds;
+    $microseconds = $duration->microseconds;
     
     $days         = $duration->total_days;
     $hours        = $duration->total_hours;
