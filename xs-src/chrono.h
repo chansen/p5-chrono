@@ -984,6 +984,13 @@ chrono_duration_compare(chrono_duration_t d1, chrono_duration_t d2) {
     return 0;
 }
 
+static void
+chrono_duration_swap(chrono_duration_t *d1, chrono_duration_t *d2) {
+    const chrono_duration_t tmp = *d1;
+    *d1 = *d2;
+    *d2 = tmp;
+}
+
 #define chrono_date_from_string(str, len) \
     THX_chrono_date_from_string(aTHX_ str, len)
 

@@ -370,6 +370,28 @@ XS(XS_Chrono_DateTime_ncmp) {
     XSRETURN_IV(chrono_datetime_compare(dt1, dt2));
 }
 
+XS(XS_Chrono_Duration_ncmp) {
+    dVAR; dXSARGS;
+    SV *svd1, *svd2;
+    bool swap;
+    chrono_duration_t d1, d2;
+
+    if (items < 3)
+        croak("Wrong number of arguments to Chrono::Duration::(<=>");
+
+    svd1 = ST(0);
+    svd2 = ST(1);
+    swap = cBOOL(SvTRUE(ST(2)));
+
+    if (!sv_isa_chrono_duration(svd2))
+        croak_cmp(svd1, svd2, swap, "Chrono::Duration");
+    d1 = sv_2chrono_duration(svd1, "self");
+    d2 = sv_2chrono_duration(svd2, "other");
+    if (swap)
+        chrono_duration_swap(&d1, &d2);
+    XSRETURN_IV(chrono_duration_compare(d1, d2));
+}
+
 MODULE = Chrono   PACKAGE = Chrono
 
 PROTOTYPES: DISABLE
@@ -384,6 +406,7 @@ BOOT:
     sv_setsv(get_sv("Chrono::Date::()", GV_ADD), &PL_sv_yes);
     sv_setsv(get_sv("Chrono::Time::()", GV_ADD), &PL_sv_yes);
     sv_setsv(get_sv("Chrono::DateTime::()", GV_ADD), &PL_sv_yes);
+    sv_setsv(get_sv("Chrono::Duration::()", GV_ADD), &PL_sv_yes);
     newXS("Chrono::Date::()", XS_Chrono_nil, file);
     newXS("Chrono::Date::(\"\"", XS_Chrono_Date_stringify, file);
     newXS("Chrono::Date::(<=>", XS_Chrono_Date_ncmp, file);
@@ -393,6 +416,8 @@ BOOT:
     newXS("Chrono::DateTime::()", XS_Chrono_nil, file);
     newXS("Chrono::DateTime::(\"\"", XS_Chrono_DateTime_stringify, file);
     newXS("Chrono::DateTime::(<=>", XS_Chrono_DateTime_ncmp, file);
+    newXS("Chrono::Duration::()", XS_Chrono_nil, file);
+    newXS("Chrono::Duration::(<=>", XS_Chrono_Duration_ncmp, file);
 }
 
 #ifdef USE_ITHREADS
