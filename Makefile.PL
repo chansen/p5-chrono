@@ -5,9 +5,9 @@ BEGIN {
     unshift @INC, 'inc';
 
     my @required = (
-        'inc::Module::Install'           => '1.00',
-        'Module::Install::ReadmeFromPod' => '0.20',
-        'Module::Install::XSUtil'        => '0.36',
+        'inc::Module::Install'      => '1.00',
+        'Module::Install::XSUtil'   => '0.36',
+        'Test::More'                => '0.88',
     );
 
     my @missing;
@@ -24,6 +24,7 @@ BEGIN {
         exit 1;
      }
 }
+
 use inc::Module::Install;
 
 name           'Chrono';
