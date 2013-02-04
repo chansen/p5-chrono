@@ -213,6 +213,32 @@ chrono_format_microsecond(char *d, const UV n, const size_t len) {
 
 #undef CHR
 
+size_t
+chrono_i64toa(int64_t v, char *d, size_t len) {
+    char buf[30], *p, *e;
+    size_t n;
+
+    p = e = buf + sizeof(buf);
+    if (v < 0) {
+        do {
+            *--p = '0' - (v % 10);
+        } while (v /= 10);
+
+        *--p = '-';
+    }
+    else {
+        do {
+            *--p = '0' + (v % 10);
+        } while (v /= 10);
+    }
+
+    n = e - p;
+    if (n > len)
+        return 0;
+    memcpy(d, p, n);
+    return n;
+}
+
 /* Chrono::Date */
 
 static chrono_date_t
@@ -984,6 +1010,37 @@ chrono_duration_compare(chrono_duration_t d1, chrono_duration_t d2) {
     return 0;
 }
 
+static SV *
+THX_chrono_duration_format(pTHX_ chrono_time_t d, SV *dsv, IV precision) {
+    char *p;
+
+    (void)SvUPGRADE(dsv, SVt_PV);
+    (void)SvGROW(dsv, SvCUR(dsv) + 2 + 20 + 1 + 6 + 1);
+    p = SvPVX(dsv) + SvCUR(dsv);
+    *p++ = 'P';
+    *p++ = 'T';
+    p += chrono_i64toa(chrono_duration_seconds(d), p, SvLEN(dsv) - 2);
+    *p++ = 'S';
+    if (precision > 0) {
+        *p++ = '.';
+        p = chrono_format_microsecond(p, chrono_duration_microsecond(d), precision);
+    }
+    SvCUR_set(dsv, p - SvPVX(dsv));
+    SvPOK_only(dsv);
+    return dsv;
+}
+
+static SV *
+THX_chrono_duration_to_string(pTHX_ chrono_duration_t d, IV precision) {
+    SV *dsv;
+
+    if (precision < 0 || precision > 6)
+        croak("Parameter 'precision' is out of the range [0, 6]");
+    dsv = sv_newmortal();
+    return THX_chrono_duration_format(aTHX_ d, dsv, precision);
+}
+
+
 static void
 chrono_duration_swap(chrono_duration_t *d1, chrono_duration_t *d2) {
     const chrono_duration_t tmp = *d1;
@@ -1127,6 +1184,9 @@ chrono_duration_swap(chrono_duration_t *d1, chrono_duration_t *d2) {
 
 #define chrono_duration_subtract_duration(d1, d2) \
     THX_chrono_duration_subtract_duration(aTHX_ d1, d2)
+
+#define chrono_duration_to_string(dt, p) \
+    THX_chrono_duration_to_string(aTHX_ dt, p)
 
 #endif
 

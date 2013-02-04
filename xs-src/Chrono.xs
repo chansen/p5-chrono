@@ -304,6 +304,14 @@ XS(XS_Chrono_DateTime_stringify) {
     XSRETURN(1);
 }
 
+XS(XS_Chrono_Duration_stringify) {
+    dVAR; dXSARGS;
+    if (items < 1)
+        croak("Wrong number of arguments to Chrono::Duration::(\"\"");
+    ST(0) = chrono_duration_to_string(sv_2chrono_duration(ST(0), "self"), 6);
+    XSRETURN(1);
+}
+
 XS(XS_Chrono_Date_ncmp) {
     dVAR; dXSARGS;
     SV *svd1, *svd2;
@@ -418,6 +426,7 @@ BOOT:
     newXS("Chrono::DateTime::(<=>", XS_Chrono_DateTime_ncmp, file);
     newXS("Chrono::Duration::()", XS_Chrono_nil, file);
     newXS("Chrono::Duration::(<=>", XS_Chrono_Duration_ncmp, file);
+    newXS("Chrono::Duration::(\"\"", XS_Chrono_Duration_stringify, file);
 }
 
 #ifdef USE_ITHREADS

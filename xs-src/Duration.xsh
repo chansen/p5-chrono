@@ -210,3 +210,11 @@ compare(self, other)
   OUTPUT:
     RETVAL
 
+void
+to_string(self, precision=6)
+    const chrono_duration_t self
+    IV precision
+  PPCODE:
+    ST(0) = chrono_duration_to_string(self, precision);
+    XSRETURN(1);
+
