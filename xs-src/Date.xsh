@@ -253,6 +253,31 @@ add_years(self, value)
     RETVAL
 
 void
+length_of_year(self)
+    const chrono_date_t self
+  ALIAS:
+    Chrono::Date::length_of_year    = 0
+    Chrono::Date::length_of_quarter = 1
+    Chrono::Date::length_of_month   = 2
+  PREINIT:
+    IV v = 0;
+  PPCODE:
+    switch (ix) {
+        case 0: v = chrono_date_length_of_year(self);       break;
+        case 1: v = chrono_date_length_of_quarter(self);    break;
+        case 2: v = chrono_date_length_of_month(self);      break;
+    }
+    XSRETURN_IV(v);
+
+bool
+is_leap_year(self)
+    const chrono_date_t self
+  CODE:
+    RETVAL = chrono_date_is_leap_year(self);
+  OUTPUT:
+    RETVAL
+
+void
 is_before(self, other)
     const chrono_date_t self
     const chrono_date_t other

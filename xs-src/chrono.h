@@ -511,6 +511,30 @@ THX_chrono_date_to_string(pTHX_ chrono_date_t d) {
     return THX_chrono_date_format_ymd(aTHX_ d, dsv);
 }
 
+static IV
+chrono_date_length_of_year(chrono_date_t d) {
+    return dt_days_in_year(dt_year(d));
+}
+
+static IV
+chrono_date_length_of_quarter(chrono_date_t d) {
+    int y, q;
+    dt_to_yqd(d, &y, &q, NULL);
+    return dt_days_in_quarter(y, q);
+}
+
+static IV
+chrono_date_length_of_month(chrono_date_t d) {
+    int y, m;
+    dt_to_ymd(d, &y, &m, NULL);
+    return dt_days_in_month(y, m);
+}
+
+static IV
+chrono_date_is_leap_year(chrono_date_t d) {
+    return dt_leap_year(dt_year(d));
+}
+
 static void
 chrono_date_swap(chrono_date_t *d1, chrono_date_t *d2) {
     const chrono_date_t tmp = *d1;
