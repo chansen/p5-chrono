@@ -45,7 +45,7 @@ BEGIN {
     my $month = 0;
     foreach my $day (@MonthLength365) {
         my $date = Chrono::Date->from_ymd(2013, ++$month, 1)->at_end_of_month;
-        my $from = "->from_ymd(2012, $month, 1)->at_end_of_month";
+        my $from = "->from_ymd(2013, $month, 1)->at_end_of_month";
         is($date->year,            2013, "$from->year");
         is($date->month,         $month, "$from->month");
         is($date->day_of_month,    $day, "$from->day_of_month");
@@ -71,7 +71,7 @@ BEGIN {
     my $quarter = 0;
     foreach my $day (@QuarterLength365) {
         my $date = Chrono::Date->from_yqd(2013, ++$quarter, 1)->at_end_of_quarter;
-        my $from = "->from_yqd(2012, $quarter, 1)->at_end_of_quarter";
+        my $from = "->from_yqd(2013, $quarter, 1)->at_end_of_quarter";
         is($date->year,               2013, "$from->year");
         is($date->quarter,        $quarter, "$from->quarter");
         is($date->day_of_quarter,     $day, "$from->day_of_quarter");
