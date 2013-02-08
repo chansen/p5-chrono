@@ -1121,6 +1121,9 @@ chrono_duration_swap(chrono_duration_t *d1, chrono_duration_t *d2) {
 #define chrono_date_delta_years(d1, d2)     dt_delta_years(d2, d1)      /* reversed! */
 #define chrono_date_delta_quarters(d1, d2)  dt_delta_quarters(d2, d1)   /* reversed! */
 #define chrono_date_delta_months(d1, d2)    dt_delta_months(d2, d1)     /* reversed! */
+#define chrono_date_at_end_of_year(d)       dt_last_day_of_year(d, 0)
+#define chrono_date_at_end_of_quarter(d)    dt_last_day_of_quarter(d, 0)
+#define chrono_date_at_end_of_month(d)      dt_last_day_of_month(d, 0)
 
 #define chrono_date_to_string(d) \
     THX_chrono_date_to_string(aTHX_ d)

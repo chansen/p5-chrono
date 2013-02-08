@@ -187,6 +187,25 @@ with_year(self, value)
   OUTPUT:
     RETVAL
 
+chrono_date_t
+at_end_of_year(self)
+    const chrono_date_t self
+  ALIAS:
+    Chrono::Date::at_end_of_year    = 0
+    Chrono::Date::at_end_of_quarter = 1
+    Chrono::Date::at_end_of_month   = 2
+  PREINIT:
+    dSTASH_INVOCANT;
+  CODE:
+    RETVAL = 0;
+    switch (ix) {
+        case 0: RETVAL = chrono_date_at_end_of_year(self);      break;
+        case 1: RETVAL = chrono_date_at_end_of_quarter(self);   break;
+        case 2: RETVAL = chrono_date_at_end_of_month(self);     break;
+    }
+  OUTPUT:
+    RETVAL
+
 void
 delta_years(self, other)
     const chrono_date_t self
