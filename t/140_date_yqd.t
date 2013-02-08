@@ -24,6 +24,7 @@ while (<DATA>) {
         is($date->quarter,         $q,   "$from->quarter");
         is($date->day_of_quarter,  $doq, "$from->day_of_quarter");
         is($date->to_string,       $exp, "$from->to_string");
+        is_deeply([$date->to_yqd], [$y, $q, $doq], "$from->to_yqd");
     }
 
     {

@@ -311,3 +311,35 @@ to_string(self)
     ST(0) = chrono_date_to_string(self);
     XSRETURN(1);
 
+void
+to_yd(self)
+    const chrono_date_t self
+  PREINIT:
+    int y, d;
+  PPCODE:
+    dt_to_yd(self, &y, &d);
+    EXTEND(SP, 2);
+    mPUSHi(y);
+    mPUSHi(d);
+
+
+void
+to_ymd(self)
+    const chrono_date_t self
+  ALIAS:
+    Chrono::Date::to_ymd = 0
+    Chrono::Date::to_ywd = 1
+    Chrono::Date::to_yqd = 2
+  PREINIT:
+    int y, x, d;
+  PPCODE:
+    switch (ix) {
+        case 0: dt_to_ymd(self, &y, &x, &d); break;
+        case 1: dt_to_ywd(self, &y, &x, &d); break;
+        case 2: dt_to_yqd(self, &y, &x, &d); break;
+    }
+    EXTEND(SP, 3);
+    mPUSHi(y);
+    mPUSHi(x);
+    mPUSHi(d);
+

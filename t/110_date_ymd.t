@@ -31,6 +31,7 @@ while (<DATA>) {
         my $date = Chrono::Date->from_ymd($y, $m, $d);
         my $from = "->from_ymd($y, $m, $d)";
         is($date->to_string, $exp, "$from->to_string");
+        is_deeply([$date->to_ymd], [$y, $m, $d], "$from->to_ymd");
     }
 
     {

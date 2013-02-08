@@ -24,6 +24,7 @@ while (<DATA>) {
         is($date->day_of_week,  $wd,  "$from->day_of_week");
         is($date->week,         $wn,  "$from->week");
         is($date->to_string,    $exp, "$from->to_string");
+        is_deeply([$date->to_ywd], [$wy, $wn, $wd], "$from->to_ywd");
     }
 
     {

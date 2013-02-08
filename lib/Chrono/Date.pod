@@ -32,10 +32,10 @@ Chrono::Date -
     $rdn      = $date->rdn;                         # Rata Die day
     
     $string   = $date->to_string;                   # YYYY-MM-DD
-    @yd       = $date->to_yd                        # XXX ?
-    @ymd      = $date->to_ymd                       # XXX ?
-    @yqd      = $date->to_yqd                       # XXX ?
-    @ywd      = $date->to_ywd                       # XXX ?
+    @yd       = $date->to_yd                        # Ordinal date
+    @ymd      = $date->to_ymd                       # Calendar date
+    @ywd      = $date->to_ywd                       # Week date
+    @yqd      = $date->to_yqd                       # Quarter date
     
     $datetime = $date->at_time($time);              # Chrono::Time
     

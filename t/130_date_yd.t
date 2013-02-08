@@ -23,6 +23,7 @@ while (<DATA>) {
         is($date->day_of_month, $d,   "$from->day_of_month");
         is($date->day_of_year,  $doy, "$from->day_of_year");
         is($date->to_string,    $exp, "$from->to_string");
+        is_deeply([$date->to_yd], [$y, $doy], "$from->to_yd");
     }
 
     {
