@@ -12,8 +12,8 @@ Chrono::Date -
     
     $date = Chrono::Date->from_yd($y, $d);          # Ordinal date
     $date = Chrono::Date->from_ymd($y, $m, $d);     # Calendar date
-    $date = Chrono::Date->from_yqd($y, $q, $d);     # Quarter date
     $date = Chrono::Date->from_ywd($y, $w, $d);     # Week date
+    $date = Chrono::Date->from_yqd($y, $q, $d);     # Quarter date
     $date = Chrono::Date->from_cjdn($cjdn);         # Chronological Julian day
     $date = Chrono::Date->from_rdn($rdn);           # Rata Die day
     $date = Chrono::Date->from_string($string);     # Any ISO 8601 date
@@ -45,6 +45,10 @@ Chrono::Date -
     
     $integer  = $date1->compare($date2);
     
+    $date2    = $date1->at_end_of_year;
+    $date2    = $date1->at_end_of_quarter;
+    $date2    = $date1->at_end_of_month;
+    
     $date2    = $date1->with_year($year);
     $date2    = $date1->with_quarter($quarter);
     $date2    = $date1->with_month($month);
@@ -66,6 +70,12 @@ Chrono::Date -
     $date2    = $date1->add_months($months);
     $date2    = $date1->add_weeks($weeks);
     $date2    = $date1->add_days($days);
+    
+    $length   = $date->length_of_year;
+    $length   = $date->length_of_quarter;
+    $length   = $date->length_of_month;
+    
+    $boolean  = $date->is_leap_year;
 
 =head1 DESCRIPTION
 
