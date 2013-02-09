@@ -24,20 +24,22 @@ BEGIN {
 }
 
 {
-    my $date = Chrono::Date->from_ymd(2012, 2, 29);
+    my $date = Chrono::Date->from_ymd(2012, 12, 31);
 
     {
         my $got = $date->with_year(2013);
         is($got->year,         2013, "with_year(2013)->year");
-        is($got->month,           2, "with_year(2013)->quarter");
-        is($got->day_of_month,   28, "with_year(2013)->day_of_month");
+        is($got->month,          12, "with_year(2013)->month");
+        is($got->day_of_month,   31, "with_year(2013)->day_of_month");
+        is($got->day_of_year,   365, "with_year(2013)->day_of_year");
     }
 
     {
         my $got = $date->with_year(2016);
         is($got->year,         2016, "with_year(2016)->year");
-        is($got->month,           2, "with_year(2016)->quarter");
-        is($got->day_of_month,   29, "with_year(2016)->day_of_month");
+        is($got->month,          12, "with_year(2016)->month");
+        is($got->day_of_month,   31, "with_year(2016)->day_of_month");
+        is($got->day_of_year,   366, "with_year(2016)->day_of_year");
     }
 }
 

@@ -315,14 +315,14 @@ THX_chrono_date_from_ywd(pTHX_ IV y, IV w, IV d) {
 
 static chrono_date_t
 THX_chrono_date_with_year(pTHX_ chrono_date_t date, IV y) {
-    int m, d, dim;
+    int d, diy;
 
     if (y < 1 || y > 9999)
         croak("Parameter 'year' is out of the range [1, 9999]");
-    dt_to_ymd(date, NULL, &m, &d);
-    if (d > 28 && d > (dim = dt_days_in_month(y, m)))
-        d = dim;
-    return dt_from_ymd(y, m, d);
+    d = dt_day_of_year(date);
+    if (d > 365 && d > (diy = dt_days_in_year(y)))
+        d = diy;
+    return dt_from_yd(y, d);
 }
 
 static chrono_date_t
@@ -421,7 +421,7 @@ THX_chrono_date_add_years(pTHX_ chrono_date_t d, IV years) {
 
     if (!VALID_YEARS_DELTA(years))
         croak("Parameter 'years' is out of the range of valid values");
-    res = dt_add_months(d, years * 12, DT_LIMIT);
+    res = dt_add_years(d, years, DT_LIMIT);
     if (!VALID_DATE(res))
         croak("Date is out of supported range");
     return res;
