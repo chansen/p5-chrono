@@ -1,47 +1,47 @@
 TYPEMAP
-I64V						T_I64V
+I64V                        T_I64V
 
-chrono_date_t				T_DATE
-const chrono_date_t			T_DATE
+chrono_date_t               T_DATE
+const chrono_date_t         T_DATE
 
-chrono_time_t				T_TIME
-const chrono_time_t			T_TIME
+chrono_time_t               T_TIME
+const chrono_time_t         T_TIME
 
-chrono_datetime_t			T_DATETIME
-const chrono_datetime_t		T_DATETIME
+chrono_datetime_t           T_DATETIME
+const chrono_datetime_t     T_DATETIME
 
-chrono_duration_t			T_DURATION
-const chrono_duration_t		T_DURATION
+chrono_duration_t           T_DURATION
+const chrono_duration_t     T_DURATION
 
 INPUT
 T_I64V
-	$var = SvI64V($arg);
+    $var = SvI64V($arg);
 
 T_DATE
-	$var = sv_2chrono_date($arg, \"$var\");
+    $var = sv_2chrono_date($arg, \"$var\");
 
 T_TIME
-	$var = sv_2chrono_time($arg, \"$var\");
+    $var = sv_2chrono_time($arg, \"$var\");
 
 T_DATETIME
-	$var = sv_2chrono_datetime($arg, \"$var\");
+    $var = sv_2chrono_datetime($arg, \"$var\");
 
 T_DURATION
-	$var = sv_2chrono_duration($arg, \"$var\");
+    $var = sv_2chrono_duration($arg, \"$var\");
 
 OUTPUT
 T_I64V
-	$arg = newSVi64v($var);
+    $arg = newSVi64v($var);
 
 T_DATE
-	$arg = newSVchrono_date(&$var, stash);
+    $arg = newSVchrono_date(&$var, stash);
 
 T_TIME
-	$arg = newSVchrono_time(&$var, stash);
+    $arg = newSVchrono_time(&$var, stash);
 
 T_DATETIME
-	$arg = newSVchrono_datetime(&$var, stash);
+    $arg = newSVchrono_datetime(&$var, stash);
 
 T_DURATION
-	$arg = newSVchrono_duration(&$var, stash);
+    $arg = newSVchrono_duration(&$var, stash);
 
