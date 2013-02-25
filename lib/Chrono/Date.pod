@@ -89,7 +89,7 @@ Chrono::Date -
         day   => 25
     );
 
-Returns an instance of C<Chrono::Date> with the given named parameters 
+Constructs an instance of C<Chrono::Date> with the given named parameters 
 I<year> (1-9999), I<month> of the year (1-12) and I<day> of the month (1-31).
 The day must be valid for the year and month, otherwise an exception is raised.
 
@@ -97,7 +97,7 @@ The day must be valid for the year and month, otherwise an exception is raised.
 
     $date = Chrono::Date->from_yd($year, $day);
 
-Returns an instance of C<Chrono::Date> with the given positional parameters
+Constructs an instance of C<Chrono::Date> with the given positional parameters
 I<year> and I<day> of the year (1-366). The day must be valid for the year, 
 otherwise an exception is raised.
 
@@ -105,7 +105,7 @@ otherwise an exception is raised.
 
     $date = Chrono::Date->from_ymd($year, $month, $day);
 
-Returns an instance of C<Chrono::Date> with the given positional parameters
+Constructs an instance of C<Chrono::Date> with the given positional parameters
 I<year> (1-9999), I<month> of the year (1-12) and I<day> of the month (1-31). 
 The day must be valid for the year and month, otherwise an exception is raised.
 
@@ -113,7 +113,7 @@ The day must be valid for the year and month, otherwise an exception is raised.
 
     $date = Chrono::Date->from_ywd($year, $week, $day);
 
-Returns an instance of C<Chrono::Date> with the given positional parameters
+Constructs an instance of C<Chrono::Date> with the given positional parameters
 I<year> (1-9999), I<week> of the year (1-53) and I<day> of the week (1-7). 
 The week must be valid for the year, otherwise an exception is raised.
 
@@ -121,7 +121,7 @@ The week must be valid for the year, otherwise an exception is raised.
 
     $date = Chrono::Date->from_yqd($year, $quarter, $day);
 
-Returns an instance of C<Chrono::Date> with the given positional parameters
+Constructs an instance of C<Chrono::Date> with the given positional parameters
 I<year> (1-9999), I<quarter> of the year (1-4) and I<day> of the quarter (1-92). 
 The day must be valid for the year and quarter, otherwise an exception is raised.
 
@@ -129,26 +129,27 @@ The day must be valid for the year and quarter, otherwise an exception is raised
 
     $date = Chrono::Date->from_cjdn($cjdn);
 
-Returns an instance of C<Chrono::Date> with the given Chronological Julian Day 
+Constructs an instance of C<Chrono::Date> with the given Chronological Julian Day 
 Number. The Chronological Julian Day Number is a simple incrementing count of 
-days where day 1721426 is 0001-01-01. The day number must be within the 
-supported range (0001-01-01 to 9999-12-31), otherwise an exception is raised.
+days where day 1721426 is 0001-01-01. The day number must be within the supported 
+date range (0001-01-01 to 9999-12-31), otherwise an exception is raised.
 
-=head2 Chrono::Date->from_rnd
+=head2 Chrono::Date->from_rdn
 
     $date = Chrono::Date->from_rdn($rdn);
 
-Returns an instance of C<Chrono::Date> with the given Rata Die Number. The
+Constructs an instance of C<Chrono::Date> with the given Rata Die Number. The
 Rata Die Number is a simple incrementing count of days where day 1 is 0001-01-01. 
-The number must be within the supported range (0001-01-01 to 9999-12-31), otherwise 
-an exception is raised.
+The number must be within the supported date range (0001-01-01 to 9999-12-31), 
+otherwise an exception is raised.
 
 =head2 Chrono::Date->from_string
 
     $date = Chrono::Date->from_string($string);
 
-Returns an instance of C<Chrono::Date> from the given I<string>. The string must be a
-complete ISO 8601 date only representation, otherwise an exception is raised.
+Constructs an instance of C<Chrono::Date> from the given I<string>. The string 
+must be acomplete ISO 8601 date only representation, otherwise an exception 
+is raised.
 
     Extended     Basic
     2012-12-24   20121224   Calendar date   (ISO 8601)
@@ -204,8 +205,7 @@ Returns the day of the month (1-31).
 
     $day = $date->day_of_week;
 
-Returns the day of the week (1-7). The value follows the ISO 8601 standard, 
-from 1 (Monday) to 7 (Sunday).
+Returns the day of the week (1=Monday to 7=Sunday).
 
 =head2 cjdn
 
@@ -231,7 +231,7 @@ less than the year of the date, then the result is the last day of the given yea
     $date = $date->with_quarter($quarter);
 
 Returns a copy of date with the given I<quarter> of the year altered. If the 
-quarter has fewer days than the day of quarter for the date, then the result 
+quarter has fewer days than the day of the quarter of the date, then the result 
 is the last day of the given quarter.
 
 =head2 with_month
@@ -239,37 +239,121 @@ is the last day of the given quarter.
     $date = $date->with_month($month);
 
 Returns a copy of date with the given I<month> of the year altered. If the 
-month has fewer days than the day of month for the date, then the result is 
-the last day of the given month.
+month has fewer days than the day of the month of the date, then the result 
+is the last day of the given month.
 
 =head2 with_week
 
     $date = $date->with_week($week);
 
-Returns a copy of date with the given I<week> of the year altered.
+Returns a copy of date with the given I<week> of the year altered. The week 
+must be valid for the year, otherwise an exception is raised.
 
 =head2 with_day_of_year
 
     $date = $date->with_day_of_year($day);
 
-Returns a copy of date with the given I<day> of the year altered.
+Returns a copy of date with the given I<day> of the year altered. The day must 
+be valid for the year, otherwise an exception is raised.
 
 =head2 with_day_of_quarter
 
     $date = $date->with_day_of_quarter($day);
 
-Returns a copy of date with the given I<day> of the quarter altered.
+Returns a copy of date with the given I<day> of the quarter altered. The day 
+must be valid for the year and quarter, otherwise an exception is raised.
 
 =head2 with_day_of_month
 
     $date = $date->with_day_of_month($day);
 
-Returns a copy of date with the given I<day> of the month altered.
+Returns a copy of date with the given I<day> of the month altered. The day 
+must be valid for the year and month, otherwise an exception is raised.
 
 =head2 with_day_of_week
 
     $date = $date->with_day_of_week($day);
 
 Returns a copy of date with the given I<day> of the week altered.
+
+=head2 delta_years
+
+    $years = $date->delta_years($end);
+
+Returns the difference between this date and another date in terms of years. 
+The result will be negative if the end is before the start.
+
+=head2 delta_quarters
+
+    $quarters = $date->delta_quarters($end);
+
+Returns the difference between this date and another date in terms of quarters. 
+The result will be negative if the end is before the start.
+
+=head2 delta_months
+
+    $months = $date->delta_months($end);
+
+Returns the difference between this date and another date in terms of months. 
+The result will be negative if the end is before the start.
+
+=head2 delta_weeks
+
+    $weeks = $date->delta_weeks($end);
+
+Returns the difference between this date and another date in terms of weeks. 
+The result will be negative if the end is before the start.
+
+=head2 delta_days
+
+    $days = $date->delta_days($end);
+
+Returns the difference between this date and another date in terms of days. 
+The result will be negative if the end is before the start.
+
+=head2 add_years
+
+    $date = $date->add_years($years);
+
+Returns a copy of date with the given I<years> added. If the resulting year 
+has one day less than the year of the date, then the result is the last day 
+of the resulting year. Otherwise, the result has the same day of the year as 
+the date.
+
+=head2 add_quarters
+
+    $date = $date->add_quarters($quarters);
+
+Returns a copy of date with the given I<quarters> added. If the resulting 
+quarter has fewer days than the day of the quarter of the date, then the result 
+is the last day of the resulting quarter. Otherwise, the result has the same 
+day of the quarter as the date.
+
+=head2 add_months
+
+    $date = $date->add_months($months);
+
+Returns a copy of date with the given I<months> added. If the resulting month 
+has fewer days than the day of month of the date, then the result is the last 
+day of the resulting month. Otherwise, the result has the same day of the month 
+as the date.
+
+=head2 add_weeks
+
+    $date = $date->add_weeks($weeks);
+
+Returns a copy of date with the given I<weeks> added.
+
+=head2 add_days
+
+    $date = $date->add_days($days);
+
+Returns a copy of date with the given I<days> added.
+
+
+
+
+
+
 
 
