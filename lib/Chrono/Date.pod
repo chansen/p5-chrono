@@ -31,18 +31,6 @@ Chrono::Date -
     $cjdn     = $date->cjdn;                        # Chronological Julian day
     $rdn      = $date->rdn;                         # Rata Die day
     
-    $boolean  = $date1->is_before($date2);
-    $boolean  = $date1->is_after($date2);
-    $boolean  = $date1->is_equal($date2);
-    
-    $integer  = $date1->compare($date2);
-    
-    $datetime = $date->at_time($time);              # Chrono::Time
-    
-    $date2    = $date1->at_end_of_year;
-    $date2    = $date1->at_end_of_quarter;
-    $date2    = $date1->at_end_of_month;
-    
     $date2    = $date1->with_year($year);
     $date2    = $date1->with_quarter($quarter);
     $date2    = $date1->with_month($month);
@@ -52,6 +40,18 @@ Chrono::Date -
     $date2    = $date1->with_day_of_quarter($day);
     $date2    = $date1->with_day_of_month($day);
     $date2    = $date1->with_day_of_week($day);
+    
+    $datetime = $date->at_time($time);              # Chrono::Time
+    
+    $date2    = $date1->at_end_of_year;
+    $date2    = $date1->at_end_of_quarter;
+    $date2    = $date1->at_end_of_month;
+    
+    $boolean  = $date1->is_before($date2);
+    $boolean  = $date1->is_after($date2);
+    $boolean  = $date1->is_equal($date2);
+    
+    $integer  = $date1->compare($date2);
     
     $years    = $date1->delta_years($date2);
     $quarters = $date1->delta_quarters($date2);
@@ -65,24 +65,24 @@ Chrono::Date -
     $date2    = $date1->add_weeks($weeks);
     $date2    = $date1->add_days($days);
     
-    $string   = $date->to_string;                   # YYYY-MM-DD
-    @yd       = $date->to_yd                        # Ordinal date
-    @ymd      = $date->to_ymd                       # Calendar date
-    @ywd      = $date->to_ywd                       # Week date
-    @yqd      = $date->to_yqd                       # Quarter date
-    
     $length   = $date->length_of_year;
     $length   = $date->length_of_quarter;
     $length   = $date->length_of_month;
     
     $boolean  = $date->is_leap_year;
     
-    $boolean  = $date1  < $date2;
+    $string   = $date->to_string;                   # YYYY-MM-DD
+    @yd       = $date->to_yd                        # Ordinal date
+    @ymd      = $date->to_ymd                       # Calendar date
+    @ywd      = $date->to_ywd                       # Week date
+    @yqd      = $date->to_yqd                       # Quarter date
+    
+    $boolean  = $date1 <  $date2;
     $boolean  = $date1 <= $date2;
-    $boolean  = $date1  > $date2;
+    $boolean  = $date1 >  $date2;
     $boolean  = $date1 >= $date2;
-    $boolean  = $date1 != $date2;
     $boolean  = $date1 == $date2;
+    $boolean  = $date1 != $date2;
     
     $string   = "$date";                            # YYYY-MM-DD
     
@@ -229,51 +229,6 @@ Returns the Chronological Julian Day Number.
 
 Returns the Rata Die Number.
 
-=head2 is_before
-
-    $boolean = $date->is_before($other);
-
-Returns a boolean indicating whether or not this date is before the other date.
-
-=head2 is_after
-
-    $boolean = $date->is_after($other);
-
-Returns a boolean indicating whether or not this date is after the other date.
-
-=head2 is_equal
-
-    $boolean = $date->is_equal($other);
-
-Returns a boolean indicating whether or not this date is equal the other date.
-
-=head2 compare
-
-    $integer = $date->compare($other);
-
-Returns an integer indicating whether this date is before, after or equal 
-another date. Returns a value less than zero if this date is before the other;
-zero if this date is equal the other date; a value greater than zero if this 
-date is after the other date.
-
-=head2 at_end_of_year
-
-    $date = $date->at_end_of_year;
-
-Returns a copy of date with the day of the year set to the last day.
-
-=head2 at_end_of_quarter
-
-    $date = $date->at_end_of_quarter;
-
-Returns a copy of date with the day of the quarter set to the last day.
-
-=head2 at_end_of_month
-
-    $date = $date->at_end_of_month;
-
-Returns a copy of date with the day of the month set to the last day.
-
 =head2 with_year
 
     $date = $date->with_year($year);
@@ -331,40 +286,85 @@ must be valid for the year and month, otherwise an exception is raised.
 
 Returns a copy of date with the given I<day> of the week altered.
 
+=head2 at_end_of_year
+
+    $date = $date->at_end_of_year;
+
+Returns a copy of date with the day of the year set to the last day.
+
+=head2 at_end_of_quarter
+
+    $date = $date->at_end_of_quarter;
+
+Returns a copy of date with the day of the quarter set to the last day.
+
+=head2 at_end_of_month
+
+    $date = $date->at_end_of_month;
+
+Returns a copy of date with the day of the month set to the last day.
+
+=head2 is_before
+
+    $boolean = $date->is_before($other);
+
+Returns a boolean indicating whether or not this date is before the other date.
+
+=head2 is_after
+
+    $boolean = $date->is_after($other);
+
+Returns a boolean indicating whether or not this date is after the other date.
+
+=head2 is_equal
+
+    $boolean = $date->is_equal($other);
+
+Returns a boolean indicating whether or not this date is equal the other date.
+
+=head2 compare
+
+    $integer = $date->compare($other);
+
+Returns an integer indicating whether this date is before, after or equal 
+another date. Returns a value less than zero if this date is before the other;
+zero if this date is equal the other date; a value greater than zero if this 
+date is after the other date.
+
 =head2 delta_years
 
-    $years = $date->delta_years($end);
+    $years = $date->delta_years($other);
 
 Returns the difference between this date and another date in terms of years. 
-The result will be negative if the end is before the start.
+The result will be negative if the other date is before this date.
 
 =head2 delta_quarters
 
-    $quarters = $date->delta_quarters($end);
+    $quarters = $date->delta_quarters($other);
 
 Returns the difference between this date and another date in terms of quarters. 
-The result will be negative if the end is before the start.
+The result will be negative if the other date is before this date.
 
 =head2 delta_months
 
-    $months = $date->delta_months($end);
+    $months = $date->delta_months($other);
 
 Returns the difference between this date and another date in terms of months. 
-The result will be negative if the end is before the start.
+The result will be negative if the other date is before this date.
 
 =head2 delta_weeks
 
-    $weeks = $date->delta_weeks($end);
+    $weeks = $date->delta_weeks($other);
 
 Returns the difference between this date and another date in terms of weeks. 
-The result will be negative if the end is before the start.
+The result will be negative if the other date is before this date.
 
 =head2 delta_days
 
-    $days = $date->delta_days($end);
+    $days = $date->delta_days($other);
 
 Returns the difference between this date and another date in terms of days. 
-The result will be negative if the end is before the start.
+The result will be negative if the other date is before this date.
 
 =head2 add_years
 
@@ -405,6 +405,30 @@ Returns a copy of date with the given I<weeks> added.
 
 Returns a copy of date with the given I<days> added.
 
+=head2 length_of_year
+
+    $days = $date->length_of_year;
+
+Returns the length of the year in days (365-366).
+
+=head2 length_of_quarter
+
+    $days = $date->length_of_quarter;
+
+Returns the length of the quarter of the year in days (90-92).
+
+=head2 length_of_month
+
+    $days = $date->length_of_month;
+
+Returns the length of the month of the year in days (28-31).
+
+=head2 is_leap_year
+
+    $boolean = $date->is_leap_year;
+
+Returns a boolean indicating whether or not the year of the date is a leap year.
+
 =head2 to_string
 
     $string = $date->to_string;
@@ -438,29 +462,4 @@ day of the week.
 
 Returns a list consisting of the elements year, quarter of the year and 
 day of the quarter.
-
-=head2 length_of_year
-
-    $days = $date->length_of_year;
-
-Returns the length of the year in days (365-366).
-
-=head2 length_of_quarter
-
-    $days = $date->length_of_quarter;
-
-Returns the length of the quarter of the year in days (90-92).
-
-=head2 length_of_month
-
-    $days = $date->length_of_month;
-
-Returns the length of the month of the year in days (28-31).
-
-=head2 is_leap_year
-
-    $boolean = $date->is_leap_year;
-
-Returns a boolean indicating whether or not the year of the date is a leap year.
-
 
