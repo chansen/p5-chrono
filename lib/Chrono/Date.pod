@@ -16,7 +16,7 @@ Chrono::Date -
     $date = Chrono::Date->from_yqd($y, $q, $d);     # Quarter date
     $date = Chrono::Date->from_cjdn($cjdn);         # Chronological Julian day
     $date = Chrono::Date->from_rdn($rdn);           # Rata Die day
-    $date = Chrono::Date->from_string($string);     # Any ISO 8601 date
+    $date = Chrono::Date->from_string($string);     # ISO 8601 date representation
     
     $year     = $date->year;                        # [ 1 .. 9999 ]
     $quarter  = $date->quarter;                     # [ 1 .. 4 ]
@@ -31,19 +31,13 @@ Chrono::Date -
     $cjdn     = $date->cjdn;                        # Chronological Julian day
     $rdn      = $date->rdn;                         # Rata Die day
     
-    $string   = $date->to_string;                   # YYYY-MM-DD
-    @yd       = $date->to_yd                        # Ordinal date
-    @ymd      = $date->to_ymd                       # Calendar date
-    @ywd      = $date->to_ywd                       # Week date
-    @yqd      = $date->to_yqd                       # Quarter date
-    
-    $datetime = $date->at_time($time);              # Chrono::Time
-    
     $boolean  = $date1->is_before($date2);
     $boolean  = $date1->is_after($date2);
     $boolean  = $date1->is_equal($date2);
     
     $integer  = $date1->compare($date2);
+    
+    $datetime = $date->at_time($time);              # Chrono::Time
     
     $date2    = $date1->at_end_of_year;
     $date2    = $date1->at_end_of_quarter;
@@ -71,11 +65,27 @@ Chrono::Date -
     $date2    = $date1->add_weeks($weeks);
     $date2    = $date1->add_days($days);
     
+    $string   = $date->to_string;                   # YYYY-MM-DD
+    @yd       = $date->to_yd                        # Ordinal date
+    @ymd      = $date->to_ymd                       # Calendar date
+    @ywd      = $date->to_ywd                       # Week date
+    @yqd      = $date->to_yqd                       # Quarter date
+    
     $length   = $date->length_of_year;
     $length   = $date->length_of_quarter;
     $length   = $date->length_of_month;
     
     $boolean  = $date->is_leap_year;
+    
+    $boolean  = $date1  < $date2;
+    $boolean  = $date1 <= $date2;
+    $boolean  = $date1  > $date2;
+    $boolean  = $date1 >= $date2;
+    $boolean  = $date1 != $date2;
+    $boolean  = $date1 == $date2;
+    
+    $string   = "$date";                            # YYYY-MM-DD
+    
 
 =head1 DESCRIPTION
 
@@ -148,8 +158,8 @@ otherwise an exception is raised.
     $date = Chrono::Date->from_string($string);
 
 Constructs an instance of C<Chrono::Date> from the given I<string>. The string 
-must be acomplete ISO 8601 date only representation, otherwise an exception 
-is raised.
+must be a complete ISO 8601 date representation without time, otherwise an 
+exception is raised.
 
     Extended     Basic
     2012-12-24   20121224   Calendar date   (ISO 8601)
@@ -218,6 +228,51 @@ Returns the Chronological Julian Day Number.
     $rdn = $date->rdn;
 
 Returns the Rata Die Number.
+
+=head2 is_before
+
+    $boolean = $date->is_before($other);
+
+Returns a boolean indicating whether or not this date is before the other date.
+
+=head2 is_after
+
+    $boolean = $date->is_after($other);
+
+Returns a boolean indicating whether or not this date is after the other date.
+
+=head2 is_equal
+
+    $boolean = $date->is_equal($other);
+
+Returns a boolean indicating whether or not this date is equal the other date.
+
+=head2 compare
+
+    $integer = $date->compare($other);
+
+Returns an integer indicating whether this date is before, after or equal 
+another date. Returns a value less than zero if this date is before the other;
+zero if this date is equal the other date; a value greater than zero if this 
+date is after the other date.
+
+=head2 at_end_of_year
+
+    $date = $date->at_end_of_year;
+
+Returns a copy of date with the day of the year set to the last day.
+
+=head2 at_end_of_quarter
+
+    $date = $date->at_end_of_quarter;
+
+Returns a copy of date with the day of the quarter set to the last day.
+
+=head2 at_end_of_month
+
+    $date = $date->at_end_of_month;
+
+Returns a copy of date with the day of the month set to the last day.
 
 =head2 with_year
 
@@ -350,10 +405,62 @@ Returns a copy of date with the given I<weeks> added.
 
 Returns a copy of date with the given I<days> added.
 
+=head2 to_string
 
+    $string = $date->to_string;
 
+Returns an ISO 8601 calendar date representation in extended format (YYYY-MM-DD) 
+of the date.
 
+=head2 to_yd
 
+    ($year, $day) = $date->to_yd;
 
+Returns a list consisting of the elements year and day of the year.
+
+=head2 to_ymd
+
+    ($year, $month, $day) = $date->to_ymd;
+
+Returns a list consisting of the elements year, month of the year and 
+day of the month.
+
+=head2 to_ywd
+
+    ($year, $week, $day) = $date->to_ywd;
+
+Returns a list consisting of the elements year, week of the year and 
+day of the week.
+
+=head2 to_yqd
+
+    ($year, $quarter, $day) = $date->to_yqd;
+
+Returns a list consisting of the elements year, quarter of the year and 
+day of the quarter.
+
+=head2 length_of_year
+
+    $days = $date->length_of_year;
+
+Returns the length of the year in days (365-366).
+
+=head2 length_of_quarter
+
+    $days = $date->length_of_quarter;
+
+Returns the length of the quarter of the year in days (90-92).
+
+=head2 length_of_month
+
+    $days = $date->length_of_month;
+
+Returns the length of the month of the year in days (28-31).
+
+=head2 is_leap_year
+
+    $boolean = $date->is_leap_year;
+
+Returns a boolean indicating whether or not the year of the date is a leap year.
 
 
