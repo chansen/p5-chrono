@@ -1,6 +1,6 @@
 =head1 NAME
 
-Chrono::Date - 
+Chrono::Date - Represents a date in the proleptic Gregorian calendar
 
 =head1 SYNOPSIS
 
@@ -77,17 +77,19 @@ Chrono::Date -
     @ywd      = $date->to_ywd                       # Week date
     @yqd      = $date->to_yqd                       # Quarter date
     
-    $boolean  = $date1 <  $date2;
-    $boolean  = $date1 <= $date2;
-    $boolean  = $date1 >  $date2;
-    $boolean  = $date1 >= $date2;
     $boolean  = $date1 == $date2;
     $boolean  = $date1 != $date2;
+    $boolean  = $date1 <  $date2;
+    $boolean  = $date1 >  $date2;
+    $boolean  = $date1 <= $date2;
+    $boolean  = $date1 >= $date2;
     
     $string   = "$date";                            # YYYY-MM-DD
     
 
 =head1 DESCRIPTION
+
+
 
 =head1 CONSTRUCTORS
 
