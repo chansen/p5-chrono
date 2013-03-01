@@ -89,7 +89,12 @@ Chrono::Date - Represents a date in the proleptic Gregorian calendar
 
 =head1 DESCRIPTION
 
+C<Chrono::Date> is an immutable date object representing a date in the ISO 8601 
+calendar, with no reference to a particular time zone or time of day.
 
+C<Chrono::Date> represents dates with values ranging from January 1, 0001 Anno 
+Domini (Common Era) through December 31, 9999 A.D. (C.E.) in the proleptic 
+Gregorian calendar.
 
 =head1 CONSTRUCTORS
 
@@ -127,7 +132,8 @@ The day must be valid for the year and month, otherwise an exception is raised.
 
 Constructs an instance of C<Chrono::Date> with the given positional parameters
 I<year> (1-9999), I<week> of the year (1-53) and I<day> of the week (1-7). 
-The week must be valid for the year, otherwise an exception is raised.
+The day must bevalid for the week and the week must be valid for the year, 
+otherwise an exception is raised.
 
 =head2 Chrono::Date->from_yqd
 
