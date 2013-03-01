@@ -160,8 +160,8 @@ otherwise an exception is raised.
     $date = Chrono::Date->from_string($string);
 
 Constructs an instance of C<Chrono::Date> from the given I<string>. The string 
-must be a complete ISO 8601 date representation without time, otherwise an 
-exception is raised.
+must be a complete date representation without time, otherwise an exception 
+is raised.
 
     Extended     Basic
     2012-12-24   20121224   Calendar date   (ISO 8601)
@@ -337,22 +337,28 @@ date is after the other date.
 
     $years = $date->delta_years($other);
 
-Returns the difference between this date and another date in terms of years. 
-The result will be negative if the other date is before this date.
+Returns the difference between this date and another date in terms of complete 
+years. A year is considered to be complete if the day of the year of the other 
+date is greater than or equal to the day of the year of this date. The result 
+will be negative if the other date is before this date.
 
 =head2 delta_quarters
 
     $quarters = $date->delta_quarters($other);
 
-Returns the difference between this date and another date in terms of quarters. 
+Returns the difference between this date and another date in terms of complete 
+quarters. A quarter is considered to be complete if the day of the quarter of 
+the other date is greater than or equal to the day of the quarter of this date.
 The result will be negative if the other date is before this date.
 
 =head2 delta_months
 
     $months = $date->delta_months($other);
 
-Returns the difference between this date and another date in terms of months. 
-The result will be negative if the other date is before this date.
+Returns the difference between this date and another date in terms of complete 
+months. A month is considered to be complete if the day of the month of the 
+other date is greater than or equal to the day of the month of this date. The 
+result will be negative if the other date is before this date.
 
 =head2 delta_weeks
 
