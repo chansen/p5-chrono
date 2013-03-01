@@ -188,8 +188,9 @@ with_year(self, value)
     RETVAL
 
 chrono_date_t
-at_end_of_year(self)
+at_end_of_year(self, offset=0)
     const chrono_date_t self
+    IV offset
   ALIAS:
     Chrono::Date::at_end_of_year    = 0
     Chrono::Date::at_end_of_quarter = 1
@@ -199,9 +200,9 @@ at_end_of_year(self)
   CODE:
     RETVAL = 0;
     switch (ix) {
-        case 0: RETVAL = chrono_date_at_end_of_year(self);      break;
-        case 1: RETVAL = chrono_date_at_end_of_quarter(self);   break;
-        case 2: RETVAL = chrono_date_at_end_of_month(self);     break;
+        case 0: RETVAL = chrono_date_at_end_of_year(self, offset);      break;
+        case 1: RETVAL = chrono_date_at_end_of_quarter(self, offset);   break;
+        case 2: RETVAL = chrono_date_at_end_of_month(self, offset);     break;
     }
   OUTPUT:
     RETVAL

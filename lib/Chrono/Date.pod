@@ -291,20 +291,29 @@ Returns a copy of date with the given I<day> of the week altered.
 =head2 at_end_of_year
 
     $date = $date->at_end_of_year;
+    $date = $date->at_end_of_year($offset);
 
-Returns a copy of date with the day of the year set to the last day.
+Returns a copy of date with the day of the year set to the last day. The 
+optional offset parameter specifies the number of years before (negative) 
+or after (positive) the date.
 
 =head2 at_end_of_quarter
 
     $date = $date->at_end_of_quarter;
+    $date = $date->at_end_of_quarter($offset);
 
-Returns a copy of date with the day of the quarter set to the last day.
+Returns a copy of date with the day of the quarter set to the last day. The 
+optional offset parameter specifies the number of quarters before (negative) 
+or after (positive) the date.
 
 =head2 at_end_of_month
 
     $date = $date->at_end_of_month;
+    $date = $date->at_end_of_month($offset);
 
-Returns a copy of date with the day of the month set to the last day.
+Returns a copy of date with the day of the month set to the last day. The 
+optional offset parameter specifies the number of months before (negative) 
+or after (positive) the date.
 
 =head2 is_before
 

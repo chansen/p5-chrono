@@ -405,6 +405,42 @@ THX_chrono_date_with_day_of_week(pTHX_ chrono_date_t date, IV d) {
     return res;
 }
 
+static chrono_date_t
+THX_chrono_date_at_end_of_year(pTHX_ chrono_date_t date, IV offset) {
+    chrono_date_t res;
+
+    if (!VALID_YEARS_DELTA(offset))
+        croak("Parameter 'offset' is out of the range of valid values");
+    res = dt_last_day_of_year(date, offset);
+    if (!VALID_DATE(res))
+        croak("Date is out of supported range");
+    return res;
+}
+
+static chrono_date_t
+THX_chrono_date_at_end_of_quarter(pTHX_ chrono_date_t date, IV offset) {
+    chrono_date_t res;
+
+    if (!VALID_QUARTERS_DELTA(offset))
+        croak("Parameter 'offset' is out of the range of valid values");
+    res = dt_last_day_of_quarter(date, offset);
+    if (!VALID_DATE(res))
+        croak("Date is out of supported range");
+    return res;
+}
+
+static chrono_date_t
+THX_chrono_date_at_end_of_month(pTHX_ chrono_date_t date, IV offset) {
+    chrono_date_t res;
+
+    if (!VALID_MONTHS_DELTA(offset))
+        croak("Parameter 'offset' is out of the range of valid values");
+    res = dt_last_day_of_month(date, offset);
+    if (!VALID_DATE(res))
+        croak("Date is out of supported range");
+    return res;
+}
+
 static IV
 chrono_date_delta_days(chrono_date_t d1, chrono_date_t d2) {
     return (IV)(d1 - d2);
@@ -1117,6 +1153,15 @@ chrono_duration_swap(chrono_duration_t *d1, chrono_duration_t *d2) {
 #define chrono_date_with_day_of_week(date, d) \
     THX_chrono_date_with_day_of_week(aTHX_ date, d)
 
+#define chrono_date_at_end_of_year(date, offset) \
+    THX_chrono_date_at_end_of_year(aTHX_ date, offset)
+
+#define chrono_date_at_end_of_quarter(date, offset) \
+    THX_chrono_date_at_end_of_quarter(aTHX_ date, offset)
+
+#define chrono_date_at_end_of_month(date, offset) \
+    THX_chrono_date_at_end_of_month(aTHX_ date, offset)
+
 #define chrono_date_add_years(date, y) \
     THX_chrono_date_add_years(aTHX_ date, y)
 
@@ -1145,9 +1190,6 @@ chrono_duration_swap(chrono_duration_t *d1, chrono_duration_t *d2) {
 #define chrono_date_delta_years(d1, d2)     dt_delta_years(d2, d1, TRUE)      /* reversed! */
 #define chrono_date_delta_quarters(d1, d2)  dt_delta_quarters(d2, d1, TRUE)   /* reversed! */
 #define chrono_date_delta_months(d1, d2)    dt_delta_months(d2, d1, TRUE)     /* reversed! */
-#define chrono_date_at_end_of_year(d)       dt_last_day_of_year(d, 0)
-#define chrono_date_at_end_of_quarter(d)    dt_last_day_of_quarter(d, 0)
-#define chrono_date_at_end_of_month(d)      dt_last_day_of_month(d, 0)
 
 #define chrono_date_to_string(d) \
     THX_chrono_date_to_string(aTHX_ d)
