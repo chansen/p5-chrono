@@ -400,22 +400,22 @@ dt_day_of_week(dt_t dt) {
 }
 
 dt_t
-dt_first_day_of_year(dt_t dt, int delta) {
-    return dt_from_yd(dt_year(dt) + delta, 1);
+dt_first_day_of_year(dt_t dt, int offset) {
+    return dt_from_yd(dt_year(dt) + offset, 1);
 }
 
 dt_t
-dt_first_day_of_quarter(dt_t dt, int delta) {
+dt_first_day_of_quarter(dt_t dt, int offset) {
     int y, q;
     dt_to_yqd(dt, &y, &q, NULL);
-    return dt_from_yqd(y, q + delta, 1);
+    return dt_from_yqd(y, q + offset, 1);
 }
 
 dt_t
-dt_first_day_of_month(dt_t dt, int delta) {
+dt_first_day_of_month(dt_t dt, int offset) {
     int y, m;
     dt_to_ymd(dt, &y, &m, NULL);
-    return dt_from_ymd(y, m + delta, 1);
+    return dt_from_ymd(y, m + offset, 1);
 }
 
 dt_t
@@ -424,22 +424,22 @@ dt_first_day_of_week(dt_t dt, int first_dow) {
 }
 
 dt_t
-dt_last_day_of_year(dt_t dt, int delta) {
-    return dt_from_yd(dt_year(dt) + delta + 1, 0);
+dt_last_day_of_year(dt_t dt, int offset) {
+    return dt_from_yd(dt_year(dt) + offset + 1, 0);
 }
 
 dt_t
-dt_last_day_of_quarter(dt_t dt, int delta) {
+dt_last_day_of_quarter(dt_t dt, int offset) {
     int y, q;
     dt_to_yqd(dt, &y, &q, NULL);
-    return dt_from_yqd(y, q + delta + 1, 0);
+    return dt_from_yqd(y, q + offset + 1, 0);
 }
 
 dt_t
-dt_last_day_of_month(dt_t dt, int delta) {
+dt_last_day_of_month(dt_t dt, int offset) {
     int y, m;
     dt_to_ymd(dt, &y, &m, NULL);
-    return dt_from_ymd(y, m + delta + 1, 0);
+    return dt_from_ymd(y, m + offset + 1, 0);
 }
 
 dt_t
@@ -509,7 +509,7 @@ dt_add_quarters(dt_t dt, int delta, dt_adjust_t adjust) {
     int y, q, d;
 
     dt_to_yqd(dt, &y, &q, &d);
-    if (adjust == DT_EXCESS || d < 91)
+    if (adjust == DT_EXCESS || d < 90)
         return dt_from_yqd(y, q + delta, d);
     else {
         int ry = y;
@@ -544,25 +544,139 @@ dt_add_months(dt_t dt, int delta, dt_adjust_t adjust) {
     }
 }
 
-int
-dt_delta_years(dt_t dt1, dt_t dt2) {
-    return dt_year(dt2) - dt_year(dt1);
+void
+dt_delta_yd(dt_t dt1, dt_t dt2, int *yp, int *dp) {
+    int y1, y2, d1, d2, years, days;
+
+    dt_to_yd(dt1, &y1, &d1);
+    dt_to_yd(dt2, &y2, &d2);
+
+    years = y2 - y1;
+    days = d2 - d1;
+
+    if (years > 0 && days < 0) {
+        years--;
+        days = dt2 - dt_add_years(dt1, years, DT_LIMIT);
+    }
+    else if (years < 0 && days > 0) {
+        years++;
+        days -= days_in_year(y2);
+    }
+    if (yp) *yp = years;
+    if (dp) *dp = days;
+}
+
+void
+dt_delta_ymd(dt_t dt1, dt_t dt2, int *yp, int *mp, int *dp) {
+    int months;
+
+    dt_delta_md(dt1, dt2, &months, dp);
+    if (yp) *yp = months / 12;
+    if (mp) *mp = months % 12;
+}
+
+void
+dt_delta_yqd(dt_t dt1, dt_t dt2, int *yp, int *qp, int *dp) {
+    int quarters;
+
+    dt_delta_qd(dt1, dt2, &quarters, dp);
+    if (yp) *yp = quarters / 4;
+    if (qp) *qp = quarters % 4;
+}
+
+void
+dt_delta_md(dt_t dt1, dt_t dt2, int *mp, int *dp) {
+    int y1, y2, m1, m2, d1, d2, months, days;
+
+    dt_to_ymd(dt1, &y1, &m1, &d1);
+    dt_to_ymd(dt2, &y2, &m2, &d2);
+
+    months = 12 * (y2 - y1) + (m2 - m1);
+    days = d2 - d1;
+
+    if (months > 0 && days < 0) {
+        months--;
+        days = dt2 - dt_add_months(dt1, months, DT_LIMIT);
+    }
+    else if (months < 0 && days > 0) {
+        months++;
+        days -= days_in_month(y2, m2);
+    }
+    if (mp) *mp = months;
+    if (dp) *dp = days;
+}
+
+void
+dt_delta_qd(dt_t dt1, dt_t dt2, int *qp, int *dp) {
+    int y1, y2, q1, q2, d1, d2, quarters, days;
+
+    dt_to_yqd(dt1, &y1, &q1, &d1);
+    dt_to_yqd(dt2, &y2, &q2, &d2);
+
+    quarters = 4 * (y2 - y1) + (q2 - q1);
+    days = d2 - d1;
+
+    if (quarters > 0 && days < 0) {
+        quarters--;
+        days = dt2 - dt_add_quarters(dt1, quarters, DT_LIMIT);
+    }
+    else if (quarters < 0 && days > 0) {
+        quarters++;
+        days -= days_in_quarter(y2, q2);
+    }
+    if (qp) *qp = quarters;
+    if (dp) *dp = days;
 }
 
 int
-dt_delta_quarters(dt_t dt1, dt_t dt2) {
-    int y1, y2, q1, q2;
-    dt_to_yqd(dt1, &y1, &q1, NULL);
-    dt_to_yqd(dt2, &y2, &q2, NULL);
-    return 4 * (y2 - y1) + (q2 - q1);
+dt_delta_years(dt_t dt1, dt_t dt2, bool complete) {
+    int y1, y2, d1, d2, years;
+
+    dt_to_yd(dt1, &y1, &d1);
+    dt_to_yd(dt2, &y2, &d2);
+
+    years = y2 - y1;
+    if (complete) {
+        if (dt1 > dt2)
+            years += (d2 > d1);
+        else
+            years -= (d1 > d2);
+    }
+    return years;
 }
 
 int
-dt_delta_months(dt_t dt1, dt_t dt2) {
-    int y1, y2, m1, m2;
-    dt_to_ymd(dt1, &y1, &m1, NULL);
-    dt_to_ymd(dt2, &y2, &m2, NULL);
-    return 12 * (y2 - y1) + (m2 - m1);
+dt_delta_quarters(dt_t dt1, dt_t dt2, bool complete) {
+    int y1, y2, q1, q2, d1, d2, quarters;
+
+    dt_to_yqd(dt1, &y1, &q1, &d1);
+    dt_to_yqd(dt2, &y2, &q2, &d2);
+
+    quarters = 4 * (y2 - y1) + q2 - q1;
+    if (complete) {
+        if (dt1 > dt2)
+            quarters += (d2 > d1);
+        else
+            quarters -= (d1 > d2);
+    }
+    return quarters;
+}
+
+int
+dt_delta_months(dt_t dt1, dt_t dt2, bool complete) {
+    int y1, y2, m1, m2, d1, d2, months;
+
+    dt_to_ymd(dt1, &y1, &m1, &d1);
+    dt_to_ymd(dt2, &y2, &m2, &d2);
+
+    months = 12 * (y2 - y1) + m2 - m1;
+    if (complete) {
+        if (dt1 > dt2)
+            months += (d2 > d1);
+        else
+            months -= (d1 > d2);
+    }
+    return months;
 }
 
 int

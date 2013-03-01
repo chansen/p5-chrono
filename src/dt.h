@@ -84,14 +84,14 @@ int     dt_day_of_year          (dt_t dt);
 int     dt_day_of_quarter       (dt_t dt);
 int     dt_day_of_week          (dt_t dt);
 
-dt_t    dt_first_day_of_year    (dt_t dt, int delta);
-dt_t    dt_first_day_of_quarter (dt_t dt, int delta);
-dt_t    dt_first_day_of_month   (dt_t dt, int delta);
+dt_t    dt_first_day_of_year    (dt_t dt, int offset);
+dt_t    dt_first_day_of_quarter (dt_t dt, int offset);
+dt_t    dt_first_day_of_month   (dt_t dt, int offset);
 dt_t    dt_first_day_of_week    (dt_t dt, int first_dow);
 
-dt_t    dt_last_day_of_year     (dt_t dt, int delta);
-dt_t    dt_last_day_of_quarter  (dt_t dt, int delta);
-dt_t    dt_last_day_of_month    (dt_t dt, int delta);
+dt_t    dt_last_day_of_year     (dt_t dt, int offset);
+dt_t    dt_last_day_of_quarter  (dt_t dt, int offset);
+dt_t    dt_last_day_of_month    (dt_t dt, int offset);
 dt_t    dt_last_day_of_week     (dt_t dt, int first_dow);
 
 dt_t    dt_nth_day_of_week      (dt_t dt, int nth, int dow);
@@ -106,10 +106,17 @@ dt_t    dt_add_years            (dt_t dt, int delta, dt_adjust_t adjust);
 dt_t    dt_add_quarters         (dt_t dt, int delta, dt_adjust_t adjust);
 dt_t    dt_add_months           (dt_t dt, int delta, dt_adjust_t adjust);
 
-int     dt_delta_years          (dt_t dt1, dt_t dt2);
-int     dt_delta_quarters       (dt_t dt1, dt_t dt2);
-int     dt_delta_months         (dt_t dt1, dt_t dt2);
-int     dt_delta_weeks          (dt_t dt1, dt_t dt2);
+void    dt_delta_yd             (dt_t start, dt_t end, int *y, int *d);
+void    dt_delta_ymd            (dt_t start, dt_t end, int *y, int *m, int *d);
+void    dt_delta_yqd            (dt_t start, dt_t end, int *y, int *q, int *d);
+
+void    dt_delta_md             (dt_t start, dt_t end, int *m, int *d);
+void    dt_delta_qd             (dt_t start, dt_t end, int *q, int *d);
+
+int     dt_delta_years          (dt_t start, dt_t end, bool complete);
+int     dt_delta_quarters       (dt_t start, dt_t end, bool complete);
+int     dt_delta_months         (dt_t start, dt_t end, bool complete);
+int     dt_delta_weeks          (dt_t start, dt_t end);
 
 bool    dt_leap_year            (int y);
 int     dt_days_in_year         (int y);
