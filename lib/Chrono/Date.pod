@@ -131,9 +131,9 @@ The day must be valid for the year and month, otherwise an exception is raised.
     $date = Chrono::Date->from_ywd($year, $week, $day);
 
 Constructs an instance of C<Chrono::Date> with the given positional parameters
-I<year> (1-9999), I<week> of the year (1-53) and I<day> of the week (1-7). 
-The day must bevalid for the week and the week must be valid for the year, 
-otherwise an exception is raised.
+I<year> (1-9999), I<week> of the year (1-53) and I<day> of the week 
+(1=Monday to 7=Sunday). The week must be valid for the year, otherwise an 
+exception is raised.
 
 =head2 Chrono::Date->from_yqd
 
@@ -241,66 +241,68 @@ Returns the Rata Die Number.
 
     $date = $date->with_year($year);
 
-Returns a copy of date with the given I<year> altered. If the year has one day 
-less than the year of the date, then the result is the last day of the given year.
+Returns a copy of this date with the given I<year> altered. The day of the 
+year of the date is unchanged unless the day does not exist in the given year. 
+In that case, the day is set to the last day of the given year.
 
 =head2 with_quarter
 
     $date = $date->with_quarter($quarter);
 
-Returns a copy of date with the given I<quarter> of the year altered. If the 
-quarter has fewer days than the day of the quarter of the date, then the result 
-is the last day of the given quarter.
+Returns a copy of this date with the given I<quarter> of the year altered. The 
+day of the quarter of the date is unchanged unless the day does not exist in 
+the given year. In that case, the day is set to the last day of the given year.
 
 =head2 with_month
 
     $date = $date->with_month($month);
 
-Returns a copy of date with the given I<month> of the year altered. If the 
-month has fewer days than the day of the month of the date, then the result 
-is the last day of the given month.
+Returns a copy of this date with the given I<month> of the year altered. The
+day of the month of the date is unchanged unless the day does not exist in 
+the given month. In that case, the day is set to the last day of the given 
+month.
 
 =head2 with_week
 
     $date = $date->with_week($week);
 
-Returns a copy of date with the given I<week> of the year altered. The week 
-must be valid for the year, otherwise an exception is raised.
+Returns a copy of this date with the given I<week> of the year altered. The 
+week must be valid for the year, otherwise an exception is raised.
 
 =head2 with_day_of_year
 
     $date = $date->with_day_of_year($day);
 
-Returns a copy of date with the given I<day> of the year altered. The day must 
-be valid for the year, otherwise an exception is raised.
+Returns a copy of this date with the given I<day> of the year altered. The day 
+must be valid for the year, otherwise an exception is raised.
 
 =head2 with_day_of_quarter
 
     $date = $date->with_day_of_quarter($day);
 
-Returns a copy of date with the given I<day> of the quarter altered. The day 
-must be valid for the year and quarter, otherwise an exception is raised.
+Returns a copy of this date with the given I<day> of the quarter altered. The 
+day must be valid for the year and quarter, otherwise an exception is raised.
 
 =head2 with_day_of_month
 
     $date = $date->with_day_of_month($day);
 
-Returns a copy of date with the given I<day> of the month altered. The day 
-must be valid for the year and month, otherwise an exception is raised.
+Returns a copy of this date with the given I<day> of the month altered. The 
+day must be valid for the year and month, otherwise an exception is raised.
 
 =head2 with_day_of_week
 
     $date = $date->with_day_of_week($day);
 
-Returns a copy of date with the given I<day> of the week altered.
+Returns a copy of this date with the given I<day> of the week altered.
 
 =head2 at_end_of_year
 
     $date = $date->at_end_of_year;
     $date = $date->at_end_of_year($offset);
 
-Returns a copy of date with the day of the year set to the last day. The 
-optional offset parameter specifies the number of years before (negative) 
+Returns a copy of this date with the day of the year set to the last day. 
+The optional offset parameter specifies the number of years before (negative) 
 or after (positive) the date.
 
 =head2 at_end_of_quarter
@@ -308,8 +310,8 @@ or after (positive) the date.
     $date = $date->at_end_of_quarter;
     $date = $date->at_end_of_quarter($offset);
 
-Returns a copy of date with the day of the quarter set to the last day. The 
-optional offset parameter specifies the number of quarters before (negative) 
+Returns a copy of this date with the day of the quarter set to the last day. 
+The optional offset parameter specifies the number of quarters before (negative) 
 or after (positive) the date.
 
 =head2 at_end_of_month
@@ -317,7 +319,7 @@ or after (positive) the date.
     $date = $date->at_end_of_month;
     $date = $date->at_end_of_month($offset);
 
-Returns a copy of date with the day of the month set to the last day. The 
+Returns a copy of this date with the day of the month set to the last day. The 
 optional offset parameter specifies the number of months before (negative) 
 or after (positive) the date.
 
@@ -355,7 +357,9 @@ date is after the other date.
 Returns the difference between this date and another date in terms of complete 
 years. A year is considered to be complete if the day of the year of the other 
 date is greater than or equal to the day of the year of this date. The result 
-will be negative if the other date is before this date.
+will be negative if the other date is before this date. For example, the 
+difference between 2013-250 and 2014-250 is one complete year; the difference 
+between 2013-365 and 2014-360 is zero complete years.
 
 =head2 delta_quarters
 
@@ -364,7 +368,9 @@ will be negative if the other date is before this date.
 Returns the difference between this date and another date in terms of complete 
 quarters. A quarter is considered to be complete if the day of the quarter of 
 the other date is greater than or equal to the day of the quarter of this date.
-The result will be negative if the other date is before this date.
+The result will be negative if the other date is before this date. For example,
+the difference between 2013-Q1-90 and 2013-Q2-90 is one complete quarter; the 
+difference between 2013-Q2-90 and 2013-Q3-91 is zero complete quarters.
 
 =head2 delta_months
 
@@ -373,14 +379,16 @@ The result will be negative if the other date is before this date.
 Returns the difference between this date and another date in terms of complete 
 months. A month is considered to be complete if the day of the month of the 
 other date is greater than or equal to the day of the month of this date. The 
-result will be negative if the other date is before this date.
+result will be negative if the other date is before this date. For example,
+the difference between 2013-01-28 and 2013-02-28 is one complete month; the 
+difference between 2013-02-28 and 2013-03-26 is zero complete months.
 
 =head2 delta_weeks
 
     $weeks = $date->delta_weeks($other);
 
-Returns the difference between this date and another date in terms of weeks. 
-The result will be negative if the other date is before this date.
+Returns the difference between this date and another date in terms of complete 
+weeks. The result will be negative if the other date is before this date.
 
 =head2 delta_days
 
@@ -393,40 +401,43 @@ The result will be negative if the other date is before this date.
 
     $date = $date->add_years($years);
 
-Returns a copy of date with the given I<years> added. If the resulting year 
-has one day less than the year of the date, then the result is the last day 
-of the resulting year. Otherwise, the result has the same day of the year as 
-the date.
+Returns a copy of this date with the given I<years> added. The day of the 
+year of the date is unchanged unless the day does not exist in the resulting 
+year. In that case, the day is set to the last day of the resulting year. 
+For example, 2012-366 plus one year results in 2013-365; 2011-365 plus one 
+year results in 2012-365.
 
 =head2 add_quarters
 
     $date = $date->add_quarters($quarters);
 
-Returns a copy of date with the given I<quarters> added. If the resulting 
-quarter has fewer days than the day of the quarter of the date, then the result 
-is the last day of the resulting quarter. Otherwise, the result has the same 
-day of the quarter as the date.
+Returns a copy of this date with the given I<quarters> added. The day of the 
+quarter of the date is unchanged unless the day does not exist in the resulting 
+quarter. In that case, the day is set to the last day of the resulting quarter. 
+For example, 2012-Q4-92 plus one quarter results in 2013-Q1-91; 2013-Q1-91 plus 
+one quarter results in 2013-Q2-91.
 
 =head2 add_months
 
     $date = $date->add_months($months);
 
-Returns a copy of date with the given I<months> added. If the resulting month 
-has fewer days than the day of month of the date, then the result is the last 
-day of the resulting month. Otherwise, the result has the same day of the month 
-as the date.
+Returns a copy of this date with the given I<months> added. The day of the 
+month of the date is unchanged unless the day does not exist in the resulting 
+month. In that case, the day is set to the last day of the resulting month. 
+For example, 2013-01-31 plus one month results in 2013-02-28; 2013-02-28 plus 
+one month results in 2013-03-28.
 
 =head2 add_weeks
 
     $date = $date->add_weeks($weeks);
 
-Returns a copy of date with the given I<weeks> added.
+Returns a copy of this date with the given I<weeks> added.
 
 =head2 add_days
 
     $date = $date->add_days($days);
 
-Returns a copy of date with the given I<days> added.
+Returns a copy of this date with the given I<days> added.
 
 =head2 length_of_year
 
@@ -463,26 +474,27 @@ of the date.
 
     ($year, $day) = $date->to_yd;
 
-Returns a list consisting of the elements year and day of the year.
+Returns a list consisting of the elements year (1-9999) and day of the year 
+(1-366).
 
 =head2 to_ymd
 
     ($year, $month, $day) = $date->to_ymd;
 
-Returns a list consisting of the elements year, month of the year and 
-day of the month.
+Returns a list consisting of the elements year (1-9999), month of the year
+(1-12) and day of the month (1-31).
 
 =head2 to_ywd
 
     ($year, $week, $day) = $date->to_ywd;
 
-Returns a list consisting of the elements year, week of the year and 
-day of the week.
+Returns a list consisting of the elements year (1-9999), week of the year 
+(1-53) and day of the week (1=Monday to 7=Sunday).
 
 =head2 to_yqd
 
     ($year, $quarter, $day) = $date->to_yqd;
 
-Returns a list consisting of the elements year, quarter of the year and 
-day of the quarter.
+Returns a list consisting of the elements year (1-9999), quarter of the year
+(1-4) and day of the quarter (1-92).
 
