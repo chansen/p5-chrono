@@ -251,7 +251,8 @@ In that case, the day is set to the last day of the given year.
 
 Returns a copy of this date with the given I<quarter> of the year altered. The 
 day of the quarter of the date is unchanged unless the day does not exist in 
-the given year. In that case, the day is set to the last day of the given year.
+the given quarter. In that case, the day is set to the last day of the given 
+quarter.
 
 =head2 with_month
 
