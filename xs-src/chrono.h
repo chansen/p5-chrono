@@ -443,12 +443,12 @@ THX_chrono_date_at_end_of_month(pTHX_ chrono_date_t date, IV offset) {
 
 static IV
 chrono_date_delta_days(chrono_date_t d1, chrono_date_t d2) {
-    return (IV)(d1 - d2);
+    return (IV)(d2 - d1);
 }
 
 static IV
 chrono_date_delta_weeks(chrono_date_t d1, chrono_date_t d2) {
-    return (IV)((d1 - d2) / 7);
+    return (IV)((d2 - d1) / 7);
 }
 
 static chrono_date_t
@@ -625,27 +625,27 @@ chrono_time_microsecond(chrono_time_t t) {
 
 static int64_t
 chrono_time_delta_hours(chrono_time_t t1, chrono_time_t t2) {
-    return (t1 - t2) / USECS_PER_HOUR;
+    return (t2 - t1) / USECS_PER_HOUR;
 }
 
 static int64_t
 chrono_time_delta_minutes(chrono_time_t t1, chrono_time_t t2) {
-    return (t1 - t2) / USECS_PER_MINUTE;
+    return (t2 - t1) / USECS_PER_MINUTE;
 }
 
 static int64_t
 chrono_time_delta_seconds(chrono_time_t t1, chrono_time_t t2) {
-    return (t1 - t2) / USECS_PER_SECOND;
+    return (t2 - t1) / USECS_PER_SECOND;
 }
 
 static int64_t
 chrono_time_delta_milliseconds(chrono_time_t t1, chrono_time_t t2) {
-    return (t1 - t2) / USECS_PER_MILLISECOND;
+    return (t2 - t1) / USECS_PER_MILLISECOND;
 }
 
 static int64_t
 chrono_time_delta_microseconds(chrono_time_t t1, chrono_time_t t2) {
-    return t1 - t2;
+    return t2 - t1;
 }
 
 static chrono_time_t
@@ -1187,9 +1187,9 @@ chrono_duration_swap(chrono_duration_t *d1, chrono_duration_t *d2) {
 #define chrono_date_day_of_week(d)          dt_day_of_week(d)
 #define chrono_date_rdn(d)                  dt_rdn(d)
 #define chrono_date_cjdn(d)                 dt_cjdn(d)
-#define chrono_date_delta_years(d1, d2)     dt_delta_years(d2, d1, TRUE)      /* reversed! */
-#define chrono_date_delta_quarters(d1, d2)  dt_delta_quarters(d2, d1, TRUE)   /* reversed! */
-#define chrono_date_delta_months(d1, d2)    dt_delta_months(d2, d1, TRUE)     /* reversed! */
+#define chrono_date_delta_years(d1, d2)     dt_delta_years(d1, d2, TRUE)
+#define chrono_date_delta_quarters(d1, d2)  dt_delta_quarters(d1, d2, TRUE)
+#define chrono_date_delta_months(d1, d2)    dt_delta_months(d1, d2, TRUE)
 
 #define chrono_date_to_string(d) \
     THX_chrono_date_to_string(aTHX_ d)

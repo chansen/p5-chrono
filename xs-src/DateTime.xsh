@@ -289,7 +289,7 @@ delta_hours(self, other)
     Chrono::DateTime::delta_seconds      = 2
     Chrono::DateTime::delta_milliseconds = 3
   PREINIT:
-    const chrono_duration_t d = chrono_datetime_subtract_datetime(self, other);
+    const chrono_duration_t d = chrono_datetime_subtract_datetime(other, self);
     int64_t v = 0;
   PPCODE:
     switch (ix) {
