@@ -361,6 +361,10 @@ will be negative if the other date is before this date. For example, the
 difference between 2013-250 and 2014-250 is one complete year; the difference 
 between 2013-365 and 2014-360 is zero complete years.
 
+    $start = Chrono::Date->from_yd(2010, 365);
+    $end   = Chrono::Date->from_yd(2014, 250);
+    $delta = $start->delta_years($end); # 3
+
 =head2 delta_quarters
 
     $quarters = $date->delta_quarters($other);
@@ -372,6 +376,10 @@ The result will be negative if the other date is before this date. For example,
 the difference between 2013-Q1-90 and 2013-Q2-90 is one complete quarter; the 
 difference between 2013-Q2-90 and 2013-Q3-91 is zero complete quarters.
 
+    $start = Chrono::Date->from_yqd(2012, 1, 90);
+    $end   = Chrono::Date->from_yqd(2013, 1, 10);
+    $delta = $start->delta_quarters($end); # 3
+
 =head2 delta_months
 
     $months = $date->delta_months($other);
@@ -382,6 +390,10 @@ other date is greater than or equal to the day of the month of this date. The
 result will be negative if the other date is before this date. For example,
 the difference between 2013-01-28 and 2013-02-28 is one complete month; the 
 difference between 2013-02-28 and 2013-03-26 is zero complete months.
+
+    $start = Chrono::Date->from_ymd(2013,  2, 25);
+    $end   = Chrono::Date->from_ymd(2013, 10, 10);
+    $delta = $start->delta_months($end); # 7
 
 =head2 delta_weeks
 
