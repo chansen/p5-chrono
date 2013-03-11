@@ -188,21 +188,45 @@ with_year(self, value)
     RETVAL
 
 chrono_date_t
-at_end_of_year(self, offset=0)
+at_start_of_year(self, offset=0)
     const chrono_date_t self
     IV offset
   ALIAS:
-    Chrono::Date::at_end_of_year    = 0
-    Chrono::Date::at_end_of_quarter = 1
-    Chrono::Date::at_end_of_month   = 2
+    Chrono::Date::at_start_of_year    = 0
+    Chrono::Date::at_start_of_quarter = 1
+    Chrono::Date::at_start_of_month   = 2
+    Chrono::Date::at_end_of_year      = 3
+    Chrono::Date::at_end_of_quarter   = 4
+    Chrono::Date::at_end_of_month     = 5
   PREINIT:
     dSTASH_INVOCANT;
   CODE:
     RETVAL = 0;
     switch (ix) {
-        case 0: RETVAL = chrono_date_at_end_of_year(self, offset);      break;
-        case 1: RETVAL = chrono_date_at_end_of_quarter(self, offset);   break;
-        case 2: RETVAL = chrono_date_at_end_of_month(self, offset);     break;
+        case 0: RETVAL = chrono_date_at_start_of_year(self, offset);    break;
+        case 1: RETVAL = chrono_date_at_start_of_quarter(self, offset); break;
+        case 2: RETVAL = chrono_date_at_start_of_month(self, offset);   break;
+        case 3: RETVAL = chrono_date_at_end_of_year(self, offset);      break;
+        case 4: RETVAL = chrono_date_at_end_of_quarter(self, offset);   break;
+        case 5: RETVAL = chrono_date_at_end_of_month(self, offset);     break;
+    }
+  OUTPUT:
+    RETVAL
+
+chrono_date_t
+at_start_of_week(self, day=1)
+    const chrono_date_t self
+    IV day
+  ALIAS:
+    Chrono::Date::at_start_of_week = 0
+    Chrono::Date::at_end_of_week   = 1
+  PREINIT:
+    dSTASH_INVOCANT;
+  CODE:
+    RETVAL = 0;
+    switch (ix) {
+        case 0: RETVAL = chrono_date_at_start_of_week(self, day);   break;
+        case 1: RETVAL = chrono_date_at_end_of_week(self, day);     break;
     }
   OUTPUT:
     RETVAL

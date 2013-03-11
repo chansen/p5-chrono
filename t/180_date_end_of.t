@@ -78,5 +78,31 @@ BEGIN {
     }
 }
 
+{
+    my @tests = (
+        [2012, 10, 1, 1, 10, 7],
+        [2012, 10, 1, 2, 10, 1],
+        [2012, 10, 1, 3, 10, 2],
+        [2012, 10, 1, 4, 10, 3],
+        [2012, 10, 1, 5, 10, 4],
+        [2012, 10, 1, 6, 10, 5],
+        [2012, 10, 1, 7, 10, 6],
+        [2012, 10, 1, 1, 10, 7],
+        [2012, 10, 2, 2, 11, 1],
+        [2012, 10, 3, 3, 11, 2],
+        [2012, 10, 4, 4, 11, 3],
+        [2012, 10, 5, 5, 11, 4],
+        [2012, 10, 6, 6, 11, 5],
+        [2012, 10, 7, 7, 11, 6],
+    );
+    foreach my $test (@tests) {
+        my ($sy, $sw, $sd, $day, $ew, $ed) = @$test;
+        my $date = Chrono::Date->from_ywd($sy, $sw, $sd)->at_end_of_week($day);
+        my $from = "->from_ywd($sy, $sw, $sd)->at_end_of_week($day)";
+        is($date->week,         $ew, "$from->week");
+        is($date->day_of_week,  $ed, "$from->day_of_week");
+    }
+}
+
 done_testing;
 

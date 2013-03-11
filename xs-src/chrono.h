@@ -406,6 +406,54 @@ THX_chrono_date_with_day_of_week(pTHX_ chrono_date_t date, IV d) {
 }
 
 static chrono_date_t
+THX_chrono_date_at_start_of_year(pTHX_ chrono_date_t date, IV offset) {
+    chrono_date_t res;
+
+    if (!VALID_YEARS_DELTA(offset))
+        croak("Parameter 'offset' is out of the range of valid values");
+    res = dt_first_day_of_year(date, offset);
+    if (!VALID_DATE(res))
+        croak("Date is out of supported range");
+    return res;
+}
+
+static chrono_date_t
+THX_chrono_date_at_start_of_quarter(pTHX_ chrono_date_t date, IV offset) {
+    chrono_date_t res;
+
+    if (!VALID_QUARTERS_DELTA(offset))
+        croak("Parameter 'offset' is out of the range of valid values");
+    res = dt_first_day_of_quarter(date, offset);
+    if (!VALID_DATE(res))
+        croak("Date is out of supported range");
+    return res;
+}
+
+static chrono_date_t
+THX_chrono_date_at_start_of_month(pTHX_ chrono_date_t date, IV offset) {
+    chrono_date_t res;
+
+    if (!VALID_MONTHS_DELTA(offset))
+        croak("Parameter 'offset' is out of the range of valid values");
+    res = dt_first_day_of_month(date, offset);
+    if (!VALID_DATE(res))
+        croak("Date is out of supported range");
+    return res;
+}
+
+static chrono_date_t
+THX_chrono_date_at_start_of_week(pTHX_ chrono_date_t date, IV day) {
+    chrono_date_t res;
+
+    if (day < 1 || day > 7)
+        croak("Parameter 'day' is out of the range [1, 7]");
+    res = dt_first_day_of_week(date, day);
+    if (!VALID_DATE(res))
+        croak("Date is out of supported range");
+    return res;
+}
+
+static chrono_date_t
 THX_chrono_date_at_end_of_year(pTHX_ chrono_date_t date, IV offset) {
     chrono_date_t res;
 
@@ -436,6 +484,18 @@ THX_chrono_date_at_end_of_month(pTHX_ chrono_date_t date, IV offset) {
     if (!VALID_MONTHS_DELTA(offset))
         croak("Parameter 'offset' is out of the range of valid values");
     res = dt_last_day_of_month(date, offset);
+    if (!VALID_DATE(res))
+        croak("Date is out of supported range");
+    return res;
+}
+
+static chrono_date_t
+THX_chrono_date_at_end_of_week(pTHX_ chrono_date_t date, IV day) {
+    chrono_date_t res;
+
+    if (day < 1 || day > 7)
+        croak("Parameter 'day' is out of the range [1, 7]");
+    res = dt_last_day_of_week(date, day);
     if (!VALID_DATE(res))
         croak("Date is out of supported range");
     return res;
@@ -1153,6 +1213,18 @@ chrono_duration_swap(chrono_duration_t *d1, chrono_duration_t *d2) {
 #define chrono_date_with_day_of_week(date, d) \
     THX_chrono_date_with_day_of_week(aTHX_ date, d)
 
+#define chrono_date_at_start_of_year(date, offset) \
+    THX_chrono_date_at_start_of_year(aTHX_ date, offset)
+
+#define chrono_date_at_start_of_quarter(date, offset) \
+    THX_chrono_date_at_start_of_quarter(aTHX_ date, offset)
+
+#define chrono_date_at_start_of_month(date, offset) \
+    THX_chrono_date_at_start_of_month(aTHX_ date, offset)
+
+#define chrono_date_at_start_of_week(date, day) \
+    THX_chrono_date_at_start_of_week(aTHX_ date, day)
+
 #define chrono_date_at_end_of_year(date, offset) \
     THX_chrono_date_at_end_of_year(aTHX_ date, offset)
 
@@ -1161,6 +1233,9 @@ chrono_duration_swap(chrono_duration_t *d1, chrono_duration_t *d2) {
 
 #define chrono_date_at_end_of_month(date, offset) \
     THX_chrono_date_at_end_of_month(aTHX_ date, offset)
+
+#define chrono_date_at_end_of_week(date, day) \
+    THX_chrono_date_at_end_of_week(aTHX_ date, day)
 
 #define chrono_date_add_years(date, y) \
     THX_chrono_date_add_years(aTHX_ date, y)

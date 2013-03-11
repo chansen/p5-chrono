@@ -297,6 +297,42 @@ day must be valid for the year and month, otherwise an exception is raised.
 
 Returns a copy of this date with the given I<day> of the week altered.
 
+=head2 at_start_of_year
+
+    $date = $date->at_start_of_year;
+    $date = $date->at_start_of_year($offset);
+
+Returns a copy of this date with the day of the year set to the first day. 
+The optional offset parameter specifies the number of years before (negative) 
+or after (positive) the date.
+
+=head2 at_start_of_quarter
+
+    $date = $date->at_start_of_quarter;
+    $date = $date->at_start_of_quarter($offset);
+
+Returns a copy of this date with the day of the quarter set to the first day. 
+The optional offset parameter specifies the number of quarters before (negative) 
+or after (positive) the date.
+
+=head2 at_start_of_month
+
+    $date = $date->at_start_of_month;
+    $date = $date->at_start_of_month($offset);
+
+Returns a copy of this date with the day of the month set to the first day. The 
+optional offset parameter specifies the number of months before (negative) 
+or after (positive) the date.
+
+=head2 at_start_of_week
+
+    $date = $date->at_start_of_week;
+    $date = $date->at_start_of_week($day);
+
+Returns a copy of this date with the day of the week set to the first day. The 
+optional I<day> parameter specifies the first day of the week, defaults to 
+1 (Monday).
+
 =head2 at_end_of_year
 
     $date = $date->at_end_of_year;
@@ -323,6 +359,15 @@ or after (positive) the date.
 Returns a copy of this date with the day of the month set to the last day. The 
 optional offset parameter specifies the number of months before (negative) 
 or after (positive) the date.
+
+=head2 at_end_of_week
+
+    $date = $date->at_end_of_week;
+    $date = $date->at_end_of_week($day);
+
+Returns a copy of this date with the day of the week set to the last day. The 
+optional I<day> parameter specifies the first day of the week, defaults to 
+1 (Monday).
 
 =head2 is_before
 
