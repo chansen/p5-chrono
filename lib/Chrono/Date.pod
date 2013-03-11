@@ -43,9 +43,15 @@ Chrono::Date - Represents a date in the proleptic Gregorian calendar
     
     $datetime = $date->at_time($time);              # Chrono::Time
     
+    $date2    = $date1->at_start_of_year;
+    $date2    = $date1->at_start_of_quarter;
+    $date2    = $date1->at_start_of_month;
+    $date2    = $date1->at_start_of_week;
+    
     $date2    = $date1->at_end_of_year;
     $date2    = $date1->at_end_of_quarter;
     $date2    = $date1->at_end_of_month;
+    $date2    = $date1->at_end_of_week;
     
     $boolean  = $date1->is_before($date2);
     $boolean  = $date1->is_after($date2);
