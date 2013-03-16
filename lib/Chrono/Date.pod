@@ -71,6 +71,12 @@ Chrono::Date - Represents a date in the proleptic Gregorian calendar
     $date2    = $date1->plus_weeks($weeks);
     $date2    = $date1->plus_days($days);
     
+    $date2    = $date1->minus_years($years);
+    $date2    = $date1->minus_quarters($quarters);
+    $date2    = $date1->minus_months($months);
+    $date2    = $date1->minus_weeks($weeks);
+    $date2    = $date1->minus_days($days);
+    
     $length   = $date->length_of_year;
     $length   = $date->length_of_quarter;
     $length   = $date->length_of_month;
@@ -502,6 +508,48 @@ Returns a copy of this date with the given number of I<weeks> added.
     $date = $date->plus_days($days);
 
 Returns a copy of this date with the given number of I<days> added.
+
+=head2 minus_years
+
+    $date = $date->minus_years($years);
+
+Returns a copy of this date with the given number of I<years> subtracted. The 
+day of the year of the date is unchanged unless the day does not exist in the 
+resulting year. In that case, the day is set to the last day of the resulting 
+year. For example, 2012-366 minus one year results in 2011-365; 2013-365 minus 
+one year results in 2012-365.
+
+=head2 minus_quarters
+
+    $date = $date->minus_quarters($quarters);
+
+Returns a copy of this date with the given number of I<quarters> subtracted. 
+The day of the quarter of the date is unchanged unless the day does not exist 
+in the resulting quarter. In that case, the day is set to the last day of the 
+resulting quarter. For example, 2012-Q4-92 minus one quarter results in 
+2012-Q3-91; 2012-Q3-91 minus one quarter results in 2013-Q2-91.
+
+=head2 minus_months
+
+    $date = $date->minus_months($months);
+
+Returns a copy of this date with the given number of I<months> subtracted. The 
+day of the month of the date is unchanged unless the day does not exist in the 
+resulting month. In that case, the day is set to the last day of the resulting 
+month. For example, 2013-03-31 minus one month results in 2013-02-28; 
+2013-02-28 minus one month results in 2013-01-28.
+
+=head2 minus_weeks
+
+    $date = $date->minus_weeks($weeks);
+
+Returns a copy of this date with the given number of I<weeks> subtracted.
+
+=head2 minus_days
+
+    $date = $date->minus_days($days);
+
+Returns a copy of this date with the given number of I<days> subtracted.
 
 =head2 length_of_year
 

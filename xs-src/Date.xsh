@@ -264,16 +264,25 @@ plus_years(self, value)
     const chrono_date_t self
     IV value
   ALIAS:
-    Chrono::Date::plus_years    = 0
-    Chrono::Date::plus_quarters = 1
-    Chrono::Date::plus_months   = 2
-    Chrono::Date::plus_weeks    = 3
-    Chrono::Date::plus_days     = 4
+    Chrono::Date::plus_years     = 0
+    Chrono::Date::plus_quarters  = 1
+    Chrono::Date::plus_months    = 2
+    Chrono::Date::plus_weeks     = 3
+    Chrono::Date::plus_days      = 4
+    Chrono::Date::minus_years    = 5
+    Chrono::Date::minus_quarters = 6
+    Chrono::Date::minus_months   = 7
+    Chrono::Date::minus_weeks    = 8
+    Chrono::Date::minus_days     = 9
   PREINIT:
     dSTASH_INVOCANT;
   CODE:
     if (value == 0)
         XSRETURN(1);
+    if (ix >= 5) {
+        value = -value;
+        ix = ix - 5;
+    }
     RETVAL = 0;
     switch (ix) {
         case 0: RETVAL = chrono_date_add_years(self, value);    break;
