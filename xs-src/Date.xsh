@@ -184,6 +184,8 @@ with_year(self, value)
         case 6: RETVAL = chrono_date_with_day_of_month(self, value);    break;
         case 7: RETVAL = chrono_date_with_day_of_week(self, value);     break;
     }
+    if (RETVAL == self)
+        XSRETURN(1);
   OUTPUT:
     RETVAL
 
@@ -210,6 +212,8 @@ at_start_of_year(self, offset=0)
         case 4: RETVAL = chrono_date_at_end_of_quarter(self, offset);   break;
         case 5: RETVAL = chrono_date_at_end_of_month(self, offset);     break;
     }
+    if (RETVAL == self)
+        XSRETURN(1);
   OUTPUT:
     RETVAL
 
@@ -228,6 +232,8 @@ at_start_of_week(self, day=1)
         case 0: RETVAL = chrono_date_at_start_of_week(self, day);   break;
         case 1: RETVAL = chrono_date_at_end_of_week(self, day);     break;
     }
+    if (RETVAL == self)
+        XSRETURN(1);
   OUTPUT:
     RETVAL
 
@@ -266,6 +272,8 @@ add_years(self, value)
   PREINIT:
     dSTASH_INVOCANT;
   CODE:
+    if (value == 0)
+        XSRETURN(1);
     RETVAL = 0;
     switch (ix) {
         case 0: RETVAL = chrono_date_add_years(self, value);    break;
