@@ -42,8 +42,8 @@ sub calendar_month {
 
     my @weeks;
     while ($cur < $end) {
-        push @weeks, [ map { $cur->add_days($_) } ( 0..6 ) ];
-        $cur = $cur->add_weeks(1);
+        push @weeks, [ map { $cur->plus_days($_) } ( 0..6 ) ];
+        $cur = $cur->plus_weeks(1);
     }
     return wantarray ? @weeks : \@weeks;
 }
@@ -54,7 +54,7 @@ my @order = map  { $_->[0] }
             sort { $a->[1] <=> $b->[1] }
             map  { [ $_ - 1, ($_ - $FirstDay) % 7 ] } ( 1..7 );
 
-printf "    %s %.4d\n", ucfirst $MoY[$date->month - 1], $date->year;
+printf "    %s %.4d\n", ucfirst $MoY[$Month - 1], $Year;
 printf "%s\n", join ' ', map { $DoW[$_] } @order;
 foreach my $week (@weeks) {
     printf "%s\n", join ' ', map {

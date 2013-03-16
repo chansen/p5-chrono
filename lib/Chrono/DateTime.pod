@@ -77,16 +77,16 @@ Chrono::DateTime -
     $minutes      = $datetime1->delta_minutes($datetime2);
     $seconds      = $datetime1->delta_seconds($datetime2);
     
-    $datetime2    = $datetime1->add_years($years);
-    $datetime2    = $datetime1->add_quarters($quarters);
-    $datetime2    = $datetime1->add_months($months);
-    $datetime2    = $datetime1->add_weeks($weeks);
-    $datetime2    = $datetime1->add_days($days);
-    $datetime2    = $datetime1->add_hours($hours);
-    $datetime2    = $datetime1->add_minutes($minutes);
-    $datetime2    = $datetime1->add_seconds($seconds);
-    $datetime2    = $datetime1->add_milliseconds($milliseconds);
-    $datetime2    = $datetime1->add_microseconds($microseconds);
+    $datetime2    = $datetime1->plus_years($years);
+    $datetime2    = $datetime1->plus_quarters($quarters);
+    $datetime2    = $datetime1->plus_months($months);
+    $datetime2    = $datetime1->plus_weeks($weeks);
+    $datetime2    = $datetime1->plus_days($days);
+    $datetime2    = $datetime1->plus_hours($hours);
+    $datetime2    = $datetime1->plus_minutes($minutes);
+    $datetime2    = $datetime1->plus_seconds($seconds);
+    $datetime2    = $datetime1->plus_milliseconds($milliseconds);
+    $datetime2    = $datetime1->plus_microseconds($microseconds);
     
     $duration     = $datetime1->subtract_datetime($datetime2);  # Chrono::Duration
     

@@ -42,12 +42,12 @@ Chrono::Duration -
     $duration2    = $duration1->abs;
     $duration2    = $duration1->negate;
     
-    $duration2    = $duration1->add_days($days);
-    $duration2    = $duration1->add_hours($hours);
-    $duration2    = $duration1->add_minutes($minutes);
-    $duration2    = $duration1->add_seconds($seconds);
-    $duration2    = $duration1->add_milliseconds($milliseconds);
-    $duration2    = $duration1->add_microseconds($microseconds);
+    $duration2    = $duration1->plus_days($days);
+    $duration2    = $duration1->plus_hours($hours);
+    $duration2    = $duration1->plus_minutes($minutes);
+    $duration2    = $duration1->plus_seconds($seconds);
+    $duration2    = $duration1->plus_milliseconds($milliseconds);
+    $duration2    = $duration1->plus_microseconds($microseconds);
     
     $duration3    = $duration1->add_duration($duration2);
     $duration3    = $duration1->subtract_duration($duration2);

@@ -260,15 +260,15 @@ delta_years(self, other)
     XSRETURN_IV(v);
 
 chrono_date_t
-add_years(self, value)
+plus_years(self, value)
     const chrono_date_t self
     IV value
   ALIAS:
-    Chrono::Date::add_years    = 0
-    Chrono::Date::add_quarters = 1
-    Chrono::Date::add_months   = 2
-    Chrono::Date::add_weeks    = 3
-    Chrono::Date::add_days     = 4
+    Chrono::Date::plus_years    = 0
+    Chrono::Date::plus_quarters = 1
+    Chrono::Date::plus_months   = 2
+    Chrono::Date::plus_weeks    = 3
+    Chrono::Date::plus_days     = 4
   PREINIT:
     dSTASH_INVOCANT;
   CODE:

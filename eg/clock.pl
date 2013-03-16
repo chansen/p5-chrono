@@ -25,7 +25,7 @@ my $now = Chrono::DateTime->from_epoch(time);
 my @clocks;
 foreach my $name (@zones) {
     my $zone = DateTime::TimeZone->new(name => $name);
-    my $dt   = $now->add_seconds($zone->offset_for_datetime($now));
+    my $dt   = $now->plus_seconds($zone->offset_for_datetime($now));
     $name =~ s/\w+\///;
     $name =~ s/_/\x20/g;
     push @clocks, [$name, $dt];

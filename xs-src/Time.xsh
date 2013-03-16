@@ -135,15 +135,15 @@ delta_hours(self, other)
     XSRETURN_I64V(v);
 
 chrono_time_t
-add_hours(self, value)
+plus_hours(self, value)
     const chrono_time_t self
     IV value
   ALIAS:
-    Chrono::Time::add_hours         = 0
-    Chrono::Time::add_minutes       = 1
-    Chrono::Time::add_seconds       = 2
-    Chrono::Time::add_milliseconds  = 3
-    Chrono::Time::add_microseconds  = 4
+    Chrono::Time::plus_hours         = 0
+    Chrono::Time::plus_minutes       = 1
+    Chrono::Time::plus_seconds       = 2
+    Chrono::Time::plus_milliseconds  = 3
+    Chrono::Time::plus_microseconds  = 4
   PREINIT:
     dSTASH_INVOCANT;
   CODE:

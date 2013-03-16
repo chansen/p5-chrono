@@ -65,11 +65,11 @@ Chrono::Date - Represents a date in the proleptic Gregorian calendar
     $weeks    = $date1->delta_weeks($date2);
     $days     = $date1->delta_days($date2);
     
-    $date2    = $date1->add_years($years);
-    $date2    = $date1->add_quarters($quarters);
-    $date2    = $date1->add_months($months);
-    $date2    = $date1->add_weeks($weeks);
-    $date2    = $date1->add_days($days);
+    $date2    = $date1->plus_years($years);
+    $date2    = $date1->plus_quarters($quarters);
+    $date2    = $date1->plus_months($months);
+    $date2    = $date1->plus_weeks($weeks);
+    $date2    = $date1->plus_days($days);
     
     $length   = $date->length_of_year;
     $length   = $date->length_of_quarter;
@@ -461,47 +461,47 @@ weeks. The result will be negative if the other date is before this date.
 Returns the difference between this date and another date in terms of days. 
 The result will be negative if the other date is before this date.
 
-=head2 add_years
+=head2 plus_years
 
-    $date = $date->add_years($years);
+    $date = $date->plus_years($years);
 
-Returns a copy of this date with the given I<years> added. The day of the 
-year of the date is unchanged unless the day does not exist in the resulting 
-year. In that case, the day is set to the last day of the resulting year. 
-For example, 2012-366 plus one year results in 2013-365; 2011-365 plus one 
-year results in 2012-365.
+Returns a copy of this date with the given number of I<years> added. The day 
+of the year of the date is unchanged unless the day does not exist in the 
+resulting year. In that case, the day is set to the last day of the resulting 
+year. For example, 2012-366 plus one year results in 2013-365; 2011-365 plus 
+one year results in 2012-365.
 
-=head2 add_quarters
+=head2 plus_quarters
 
-    $date = $date->add_quarters($quarters);
+    $date = $date->plus_quarters($quarters);
 
-Returns a copy of this date with the given I<quarters> added. The day of the 
-quarter of the date is unchanged unless the day does not exist in the resulting 
-quarter. In that case, the day is set to the last day of the resulting quarter. 
-For example, 2012-Q4-92 plus one quarter results in 2013-Q1-91; 2013-Q1-91 plus 
-one quarter results in 2013-Q2-91.
+Returns a copy of this date with the given number of I<quarters> added. The 
+day of the quarter of the date is unchanged unless the day does not exist in 
+the resulting quarter. In that case, the day is set to the last day of the 
+resulting quarter. For example, 2012-Q4-92 plus one quarter results in 
+2013-Q1-91; 2013-Q1-91 plus one quarter results in 2013-Q2-91.
 
-=head2 add_months
+=head2 plus_months
 
-    $date = $date->add_months($months);
+    $date = $date->plus_months($months);
 
-Returns a copy of this date with the given I<months> added. The day of the 
-month of the date is unchanged unless the day does not exist in the resulting 
-month. In that case, the day is set to the last day of the resulting month. 
-For example, 2013-01-31 plus one month results in 2013-02-28; 2013-02-28 plus 
-one month results in 2013-03-28.
+Returns a copy of this date with the given number of I<months> added. The day 
+of the month of the date is unchanged unless the day does not exist in the 
+resulting month. In that case, the day is set to the last day of the resulting 
+month. For example, 2013-01-31 plus one month results in 2013-02-28; 
+2013-02-28 plus one month results in 2013-03-28.
 
-=head2 add_weeks
+=head2 plus_weeks
 
-    $date = $date->add_weeks($weeks);
+    $date = $date->plus_weeks($weeks);
 
-Returns a copy of this date with the given I<weeks> added.
+Returns a copy of this date with the given number of I<weeks> added.
 
-=head2 add_days
+=head2 plus_days
 
-    $date = $date->add_days($days);
+    $date = $date->plus_days($days);
 
-Returns a copy of this date with the given I<days> added.
+Returns a copy of this date with the given number of I<days> added.
 
 =head2 length_of_year
 

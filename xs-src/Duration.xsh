@@ -115,16 +115,16 @@ total_days(self)
     XSRETURN_NV(v);
 
 chrono_duration_t
-add_days(self, delta)
+plus_days(self, delta)
     const chrono_duration_t self
     I64V delta
   ALIAS:
-    Chrono::Duration::add_days         = 0
-    Chrono::Duration::add_hours        = 1
-    Chrono::Duration::add_minutes      = 2
-    Chrono::Duration::add_seconds      = 3
-    Chrono::Duration::add_milliseconds = 4
-    Chrono::Duration::add_microseconds = 5
+    Chrono::Duration::plus_days         = 0
+    Chrono::Duration::plus_hours        = 1
+    Chrono::Duration::plus_minutes      = 2
+    Chrono::Duration::plus_seconds      = 3
+    Chrono::Duration::plus_milliseconds = 4
+    Chrono::Duration::plus_microseconds = 5
   PREINIT:
     dSTASH_INVOCANT;
     chrono_duration_t d = 0;
@@ -144,12 +144,12 @@ add_days(self, delta)
     RETVAL
 
 chrono_duration_t
-add_duration(self, other)
+plus_duration(self, other)
     const chrono_duration_t self
     const chrono_duration_t other
   ALIAS:
-    Chrono::Duration::add_duration      = 0
-    Chrono::Duration::subtract_duration = 1
+    Chrono::Duration::plus_duration  = 0
+    Chrono::Duration::minus_duration = 1
   PREINIT:
     dSTASH_INVOCANT;
   CODE:

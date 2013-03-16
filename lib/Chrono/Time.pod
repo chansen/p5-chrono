@@ -39,14 +39,12 @@ Chrono::Time -
     $hours        = $time1->delta_hours($time2);
     $minutes      = $time1->delta_minutes($time2);
     $seconds      = $time1->delta_seconds($time2);
-    $milliseconds = $time1->delta_milliseconds($time2);
     $microseconds = $time1->delta_microseconds($time2);
     
-    $time2        = $time1->add_hours($hours);
-    $time2        = $time1->add_minutes($minutes);
-    $time2        = $time1->add_seconds($seconds);
-    $time2        = $time1->add_milliseconds($milliseconds);
-    $time2        = $time1->add_microseconds($microseconds);
+    $time2        = $time1->plus_hours($hours);
+    $time2        = $time1->plus_minutes($minutes);
+    $time2        = $time1->plus_seconds($seconds);
+    $time2        = $time1->plus_microseconds($microseconds);
     
     $duration     = $time1->subtract_time($time2);          # XXX ?
     

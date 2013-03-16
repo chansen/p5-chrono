@@ -301,15 +301,15 @@ delta_hours(self, other)
     XSRETURN_I64V(v);
 
 chrono_datetime_t
-add_years(self, delta)
+plus_years(self, delta)
     const chrono_datetime_t self
     IV delta
   ALIAS:
-    Chrono::DateTime::add_years    = 0
-    Chrono::DateTime::add_quarters = 1
-    Chrono::DateTime::add_months   = 2
-    Chrono::DateTime::add_weeks    = 3
-    Chrono::DateTime::add_days     = 4
+    Chrono::DateTime::plus_years    = 0
+    Chrono::DateTime::plus_quarters = 1
+    Chrono::DateTime::plus_months   = 2
+    Chrono::DateTime::plus_weeks    = 3
+    Chrono::DateTime::plus_days     = 4
   PREINIT:
     dSTASH_INVOCANT;
     chrono_date_t d = chrono_datetime_date(self);
@@ -328,15 +328,15 @@ add_years(self, delta)
     RETVAL
 
 chrono_datetime_t
-add_hours(self, delta)
+plus_hours(self, delta)
     const chrono_datetime_t self
     I64V delta
   ALIAS:
-    Chrono::DateTime::add_hours        = 0
-    Chrono::DateTime::add_minutes      = 1
-    Chrono::DateTime::add_seconds      = 2
-    Chrono::DateTime::add_milliseconds = 3
-    Chrono::DateTime::add_microseconds = 4
+    Chrono::DateTime::plus_hours        = 0
+    Chrono::DateTime::plus_minutes      = 1
+    Chrono::DateTime::plus_seconds      = 2
+    Chrono::DateTime::plus_milliseconds = 3
+    Chrono::DateTime::plus_microseconds = 4
   PREINIT:
     dSTASH_INVOCANT;
     chrono_duration_t d = 0;
