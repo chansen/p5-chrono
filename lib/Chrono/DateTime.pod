@@ -88,10 +88,10 @@ Chrono::DateTime -
     $datetime2    = $datetime1->plus_milliseconds($milliseconds);
     $datetime2    = $datetime1->plus_microseconds($microseconds);
     
-    $duration     = $datetime1->subtract_datetime($datetime2);  # Chrono::Duration
+    $duration     = $datetime1->minus_datetime($datetime2);  # Chrono::Duration
     
-    $datetime2    = $datetime1->add_duration($duration);
-    $datetime2    = $datetime1->subtract_duration($duration);
+    $datetime2    = $datetime1->plus_duration($duration);
+    $datetime2    = $datetime1->minus_duration($duration);
     
     @values       = $datetime->local_rd_values;
     $seconds      = $datetime->local_rd_as_seconds;

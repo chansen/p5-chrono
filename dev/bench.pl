@@ -114,7 +114,7 @@ use DateTime      qw[];
     my $d2 = DateTime->new(year => 2013);
     Benchmark::cmpthese( -10, {
         'Chrono::DateTime' => sub {
-            my $dur = $c1->subtract_datetime($c2);
+            my $dur = $c1->minus_datetime($c2);
         },
         'DateTime' => sub {
             my $dur = $d1->subtract_datetime_absolute($d2);
@@ -123,15 +123,15 @@ use DateTime      qw[];
 }
 
 {
-    print "\n\nBenchmarking arithmetic: +7 days -1 week\n";
+    print "\n\nBenchmarking arithmetic: +7 days -7 days\n";
     my $cd = Chrono::DateTime->new(year => 2012);
     my $dt = DateTime->new(year => 2012);
     Benchmark::cmpthese( -10, {
         'Chrono::DateTime' => sub {
-            $cd = $cd->add_days(7)->add_weeks(-1);
+            $cd = $cd->plus_days(7)->plus_days(-7);
         },
         'DateTime' => sub {
-            $dt->add(days => 7)->subtract(weeks => 1);
+            $dt->add(days => 7)->subtract(days => 1);
         },
     });
 }
@@ -144,7 +144,7 @@ use DateTime      qw[];
     my $dd = DateTime::Duration->new(days => 7);
     Benchmark::cmpthese( -10, {
         'Chrono::DateTime' => sub {
-            $cdt = $cdt->add_duration($cdd)->subtract_duration($cdd);
+            $cdt = $cdt->plus_duration($cdd)->minus_duration($cdd);
         },
         'DateTime' => sub {
             $dt->add_duration($dd)->subtract_duration($dd);

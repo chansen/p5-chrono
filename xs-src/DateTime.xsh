@@ -355,7 +355,7 @@ plus_hours(self, delta)
     RETVAL
 
 chrono_duration_t
-subtract_datetime(self, other)
+minus_datetime(self, other)
     const chrono_datetime_t self
     const chrono_datetime_t other
   PREINIT:
@@ -366,12 +366,12 @@ subtract_datetime(self, other)
     RETVAL
 
 chrono_datetime_t
-add_duration(self, duration)
+plus_duration(self, duration)
     const chrono_datetime_t self
     const chrono_duration_t duration
   ALIAS:
-    Chrono::DateTime::add_duration      = 0
-    Chrono::DateTime::subtract_duration = 1
+    Chrono::DateTime::plus_duration  = 0
+    Chrono::DateTime::minus_duration = 1
   PREINIT:
     dSTASH_INVOCANT;
   CODE:

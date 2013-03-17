@@ -49,8 +49,8 @@ Chrono::Duration -
     $duration2    = $duration1->plus_milliseconds($milliseconds);
     $duration2    = $duration1->plus_microseconds($microseconds);
     
-    $duration3    = $duration1->add_duration($duration2);
-    $duration3    = $duration1->subtract_duration($duration2);
+    $duration3    = $duration1->plus_duration($duration2);
+    $duration3    = $duration1->minus_duration($duration2);
 
 =head1 DESCRIPTION
 
