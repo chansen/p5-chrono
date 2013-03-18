@@ -131,7 +131,7 @@ use DateTime      qw[];
             $cd = $cd->plus_days(7)->plus_days(-7);
         },
         'DateTime' => sub {
-            $dt->add(days => 7)->subtract(days => 1);
+            $dt->add(days => 7)->subtract(days => 7);
         },
     });
 }
