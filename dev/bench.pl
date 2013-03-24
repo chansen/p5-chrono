@@ -107,6 +107,22 @@ use DateTime      qw[];
 }
 
 {
+    print "\n\nBenchmarking: at end of current month\n";
+    my $cd = Chrono::DateTime->new(year => 2012);
+    my $dt = DateTime->new(year => 2012);
+    Benchmark::cmpthese( -10, {
+        'Chrono::DateTime' => sub {
+            $cd = $cd->with_day(1)
+                     ->plus_months(1)
+                     ->plus_days(-1);
+        },
+        'DateTime' => sub {
+            $dt->set_day(1)->add(months => 1)->subtract(days => 1);
+        },
+    });
+}
+
+{
     print "\n\nBenchmarking arithmetic: ->subtract_datetime\n";
     my $c1 = Chrono::DateTime->new(year => 2012);
     my $c2 = Chrono::DateTime->new(year => 2013);
