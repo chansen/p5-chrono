@@ -53,39 +53,32 @@ setup_my_cxt(pTHX_ pMY_CXT) {
 }
 
 static SV *
-THX_newSVchrono_date(pTHX_ const chrono_date_t *d, HV *stash) {
-    SV *pv = newSVpvn((const char *)d, sizeof(chrono_date_t));
+THX_newSVchrono(pTHX_ const char *p, STRLEN len, HV *stash) {
+    SV *pv = newSVpvn(p, len);
     SV *sv = newRV_noinc(pv);
     sv_bless(sv, stash);
     SvREADONLY_on(pv);
     return sv;
+}
+
+static SV *
+THX_newSVchrono_date(pTHX_ const chrono_date_t *d, HV *stash) {
+    return THX_newSVchrono(aTHX_ (const char *)d, sizeof(chrono_date_t), stash);
 }
 
 static SV *
 THX_newSVchrono_time(pTHX_ const chrono_time_t *t, HV *stash) {
-    SV *pv = newSVpvn((const char *)t, sizeof(chrono_time_t));
-    SV *sv = newRV_noinc(pv);
-    sv_bless(sv, stash);
-    SvREADONLY_on(pv);
-    return sv;
+    return THX_newSVchrono(aTHX_ (const char *)t, sizeof(chrono_time_t), stash);
 }
 
 static SV *
 THX_newSVchrono_datetime(pTHX_ const chrono_datetime_t *dt, HV *stash) {
-    SV *pv = newSVpvn((const char *)dt, sizeof(chrono_datetime_t));
-    SV *sv = newRV_noinc(pv);
-    sv_bless(sv, stash);
-    SvREADONLY_on(pv);
-    return sv;
+    return THX_newSVchrono(aTHX_ (const char *)dt, sizeof(chrono_datetime_t), stash);
 }
 
 static SV *
 THX_newSVchrono_duration(pTHX_ const chrono_duration_t *d, HV *stash) {
-    SV *pv = newSVpvn((const char *)d, sizeof(chrono_duration_t));
-    SV *sv = newRV_noinc(pv);
-    sv_bless(sv, stash);
-    SvREADONLY_on(pv);
-    return sv;
+    return THX_newSVchrono(aTHX_ (const char *)d, sizeof(chrono_duration_t), stash);
 }
 
 static bool
