@@ -62,6 +62,15 @@ from_epoch(klass, seconds, microsecond=0)
     RETVAL
 
 void
+from_object(klass, object)
+    SV *klass
+    SV *object
+  PREINIT:
+    dSTASH_CONSTRUCTOR_DATETIME(klass);
+  CODE:
+    XSRETURN_SV(sv_2chrono_datetime_coerce_sv(object));
+
+void
 epoch(self)
     const chrono_datetime_t self
   ALIAS:
@@ -81,9 +90,13 @@ epoch(self)
 chrono_date_t
 date(self)
     const chrono_datetime_t self
+  ALIAS:
+    Chrono::DateTime::__as_Chrono_Date  = 0
+    Chrono::DateTime::date              = 1
   PREINIT:
     dSTASH_DATE;
   CODE:
+    PERL_UNUSED_VAR(ix);
     RETVAL = chrono_datetime_date(self);
   OUTPUT:
     RETVAL
@@ -91,9 +104,13 @@ date(self)
 chrono_time_t
 time(self)
     const chrono_datetime_t self
+  ALIAS:
+    Chrono::DateTime::__as_Chrono_Time  = 0
+    Chrono::DateTime::time              = 1
   PREINIT:
     dSTASH_TIME;
   CODE:
+    PERL_UNUSED_VAR(ix);
     RETVAL = chrono_datetime_time(self);
   OUTPUT:
     RETVAL

@@ -43,6 +43,15 @@ from_hms(klass, hour, minute, second, microsecond=0)
   OUTPUT:
     RETVAL
 
+void
+from_object(klass, object)
+    SV *klass
+    SV *object
+  PREINIT:
+    dSTASH_CONSTRUCTOR_TIME(klass);
+  CODE:
+    XSRETURN_SV(sv_2chrono_time_coerce_sv(object));
+
 chrono_time_t
 midnight(klass)
     SV *klass

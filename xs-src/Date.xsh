@@ -42,6 +42,15 @@ from_string(klass, string)
   OUTPUT:
     RETVAL
 
+void
+from_object(klass, object)
+    SV *klass
+    SV *object
+  PREINIT:
+    dSTASH_CONSTRUCTOR_DATE(klass);
+  CODE:
+    XSRETURN_SV(sv_2chrono_date_coerce_sv(object));
+
 chrono_date_t
 from_yd(klass, year, day)
     SV *klass

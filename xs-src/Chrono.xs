@@ -30,8 +30,16 @@ typedef int64_t I64V;
 #define XSRETURN_BOOL(v) STMT_START { ST(0) = boolSV(v); XSRETURN(1); } STMT_END
 #endif
 
+#ifndef XSRETURN_SV
+#define XSRETURN_SV(sv) STMT_START { ST(0) = sv; XSRETURN(1); } STMT_END
+#endif
+
 #ifndef cBOOL
 #define cBOOL(cbool) ((cbool) ? (bool)1 : (bool)0)
+#endif
+
+#ifndef PERL_UNUSED_VAR
+#  define PERL_UNUSED_VAR(x) ((void)x)
 #endif
 
 #define MY_CXT_KEY "Chrono::_guts" XS_VERSION
@@ -50,6 +58,49 @@ setup_my_cxt(pTHX_ pMY_CXT) {
     MY_CXT.stash_time     = gv_stashpvs("Chrono::Time", GV_ADD);
     MY_CXT.stash_datetime = gv_stashpvs("Chrono::DateTime", GV_ADD);
     MY_CXT.stash_duration = gv_stashpvs("Chrono::Duration", GV_ADD);
+}
+
+static SV *
+THX_sv_as_chrono(pTHX_ SV *sv, const char *name) {
+    dSP;
+    SV *rv;
+    GV *method;
+    int count;
+
+    if (!SvROK(sv))
+        return NULL;
+    rv = SvRV(sv);
+    if (!SvOBJECT(rv) || !SvSTASH(rv))
+        return NULL;
+    if (!(method = gv_fetchmethod(SvSTASH(rv), name)))
+        return NULL;
+
+    ENTER;
+    SAVETMPS;
+    PUSHMARK(SP);
+    XPUSHs(sv);
+    PUTBACK;
+    count = call_sv((SV *)method, G_SCALAR);
+    SPAGAIN;
+    if (count != 1)
+        croak("Chrono: method call returned %d values, 1 expected", count);
+    rv = newSVsv(POPs);
+    PUTBACK;
+    FREETMPS;
+    LEAVE;
+    return sv_2mortal(rv);
+}
+
+static SV *
+THX_sv_2neat(pTHX_ SV *sv) {
+    if (sv_isobject(sv)) {
+        const char *name = sv_reftype(SvRV(sv), 1);
+        const char *type = sv_reftype(SvRV(sv), 0);
+        SV *dsv = sv_newmortal();
+        sv_setpvf(dsv, "%s=%s(0x%p)", name, type, SvRV(sv));
+        sv = dsv;
+    }
+    return sv;
 }
 
 static SV *
@@ -127,10 +178,46 @@ THX_sv_2chrono_date(pTHX_ SV *sv, const char *name) {
     return *(const chrono_date_t *)SvPVX_const(SvRV(sv));
 }
 
+static SV *
+THX_sv_2chrono_date_coerce_sv(pTHX_ SV *sv) {
+    SV *res;
+
+    if (THX_sv_isa_chrono_date(aTHX_ sv))
+        return sv;
+    res = THX_sv_as_chrono(aTHX_ sv, "__as_Chrono_Date");
+    if(!res || !THX_sv_isa_chrono_date(aTHX_ res))
+        croak("Cannot coerce object of type %"SVf" to Chrono::Date", THX_sv_2neat(aTHX_ sv));
+    return res;
+}
+
+static chrono_date_t
+THX_sv_2chrono_date_coerce(pTHX_ SV *sv) {
+    sv = THX_sv_2chrono_date_coerce_sv(aTHX_ sv);
+    return *(const chrono_date_t *)SvPVX_const(SvRV(sv));
+}
+
 static chrono_time_t
 THX_sv_2chrono_time(pTHX_ SV *sv, const char *name) {
     if (!THX_sv_isa_chrono_time(aTHX_ sv))
         croak("%s is not an instance of Chrono::Time", name);
+    return *(const chrono_time_t *)SvPVX_const(SvRV(sv));
+}
+
+static SV *
+THX_sv_2chrono_time_coerce_sv(pTHX_ SV *sv) {
+    SV *res;
+
+    if (THX_sv_isa_chrono_time(aTHX_ sv))
+        return sv;
+    res = THX_sv_as_chrono(aTHX_ sv, "__as_Chrono_Time");
+    if(!res || !THX_sv_isa_chrono_time(aTHX_ res))
+        croak("Cannot coerce object of type %"SVf" to Chrono::Time", THX_sv_2neat(aTHX_ sv));
+    return res;
+}
+
+static chrono_time_t
+THX_sv_2chrono_time_coerce(pTHX_ SV *sv) {
+    sv = THX_sv_2chrono_time_coerce_sv(aTHX_ sv);
     return *(const chrono_time_t *)SvPVX_const(SvRV(sv));
 }
 
@@ -141,10 +228,46 @@ THX_sv_2chrono_datetime(pTHX_ SV *sv, const char *name) {
     return *(const chrono_datetime_t *)SvPVX_const(SvRV(sv));
 }
 
+static SV *
+THX_sv_2chrono_datetime_coerce_sv(pTHX_ SV *sv) {
+    SV *res;
+
+    if (THX_sv_isa_chrono_datetime(aTHX_ sv))
+        return sv;
+    res = THX_sv_as_chrono(aTHX_ sv, "__as_Chrono_DateTime");
+    if(!res || !THX_sv_isa_chrono_datetime(aTHX_ res))
+        croak("Cannot coerce object of type %"SVf" to Chrono::DateTime", THX_sv_2neat(aTHX_ sv));
+    return res;
+}
+
+static chrono_datetime_t
+THX_sv_2chrono_datetime_coerce(pTHX_ SV *sv) {
+    sv = THX_sv_2chrono_datetime_coerce_sv(aTHX_ sv);
+    return *(const chrono_datetime_t *)SvPVX_const(SvRV(sv));
+}
+
 static chrono_duration_t
 THX_sv_2chrono_duration(pTHX_ SV *sv, const char *name) {
     if (!THX_sv_isa_chrono_duration(aTHX_ sv))
         croak("%s is not an instance of Chrono::Duration", name);
+    return *(const chrono_duration_t *)SvPVX_const(SvRV(sv));
+}
+
+static SV *
+THX_sv_2chrono_duration_coerce_sv(pTHX_ SV *sv) {
+    SV *res;
+
+    if (THX_sv_isa_chrono_duration(aTHX_ sv))
+        return sv;
+    res = THX_sv_as_chrono(aTHX_ sv, "__as_Chrono_Duration");
+    if(!res || !THX_sv_isa_chrono_duration(aTHX_ res))
+        croak("Cannot coerce object of type %"SVf" to Chrono::Duration", THX_sv_2neat(aTHX_ sv));
+    return res;
+}
+
+static chrono_duration_t
+THX_sv_2chrono_duration_coerce(pTHX_ SV *sv) {
+    sv = THX_sv_2chrono_duration_coerce_sv(aTHX_ sv);
     return *(const chrono_duration_t *)SvPVX_const(SvRV(sv));
 }
 
@@ -167,27 +290,13 @@ THX_stash_constructor(pTHX_ SV *sv, const char *name, STRLEN namelen, HV *stash)
 
 static void
 THX_croak_cmp(pTHX_ SV *sv1, SV *sv2, const bool swap, const char *name) {
-    if (sv_isobject(sv1)) {
-        const char *name = sv_reftype(SvRV(sv1), 1);
-        const char *type = sv_reftype(SvRV(sv1), 0);
-        SV *dsv = sv_newmortal();
-        sv_setpvf(dsv, "%s=%s(0x%p)", name, type, SvRV(sv1));
-        sv1 = dsv;
-    }
-    if (sv_isobject(sv2)) {
-        const char *name = sv_reftype(SvRV(sv2), 1);
-        const char *type = sv_reftype(SvRV(sv2), 0);
-        SV *dsv = sv_newmortal();
-        sv_setpvf(dsv, "%s=%s(0x%p)", name, type, SvRV(sv2));
-        sv2 = dsv;
-    }
     if (swap) {
         SV * const tmp = sv1;
         sv1 = sv2;
         sv2 = tmp;
     }
     croak("A %s object can only be compared to another %s object ('%"SVf"', '%"SVf"')",
-        name, name, sv1, sv2);
+        name, name, THX_sv_2neat(aTHX_ sv1), THX_sv_2neat(aTHX_ sv2));
 }
 
 #define dSTASH_CONSTRUCTOR(sv, name, dstash) \
@@ -255,14 +364,38 @@ THX_croak_cmp(pTHX_ SV *sv1, SV *sv2, const bool swap, const char *name) {
 #define sv_2chrono_date(sv, name) \
     THX_sv_2chrono_date(aTHX_ sv, name)
 
+#define sv_2chrono_date_coerce(sv) \
+    THX_sv_2chrono_date_coerce(aTHX_ sv)
+
+#define sv_2chrono_date_coerce_sv(sv) \
+    THX_sv_2chrono_date_coerce_sv(aTHX_ sv)
+
 #define sv_2chrono_time(sv, name) \
     THX_sv_2chrono_time(aTHX_ sv, name)
+
+#define sv_2chrono_time_coerce(sv) \
+    THX_sv_2chrono_time_coerce(aTHX_ sv)
+
+#define sv_2chrono_time_coerce_sv(sv) \
+    THX_sv_2chrono_time_coerce_sv(aTHX_ sv)
 
 #define sv_2chrono_datetime(sv, name) \
     THX_sv_2chrono_datetime(aTHX_ sv, name)
 
+#define sv_2chrono_datetime_coerce(sv) \
+    THX_sv_2chrono_datetime_coerce(aTHX_ sv)
+
+#define sv_2chrono_datetime_coerce_sv(sv) \
+    THX_sv_2chrono_datetime_coerce_sv(aTHX_ sv)
+
 #define sv_2chrono_duration(sv, name) \
     THX_sv_2chrono_duration(aTHX_ sv, name)
+
+#define sv_2chrono_duration_coerce(sv) \
+    THX_sv_2chrono_duration_coerce(aTHX_ sv)
+
+#define sv_2chrono_duration_coerce_sv(sv) \
+    THX_sv_2chrono_duration_coerce_sv(aTHX_ sv)
 
 #define croak_cmp(sv1, sv2, swap, name) \
     THX_croak_cmp(aTHX_ sv1, sv2, swap, name)

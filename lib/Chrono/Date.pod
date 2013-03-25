@@ -17,6 +17,7 @@ Chrono::Date - Represents a date in the proleptic Gregorian calendar
     $date = Chrono::Date->from_cjdn($cjdn);         # Chronological Julian day
     $date = Chrono::Date->from_rdn($rdn);           # Rata Die day
     $date = Chrono::Date->from_string($string);     # ISO 8601 date representation
+    $date = Chrono::Date->from_object($object);     # Coercion
     
     $year     = $date->year;                        # [ 1 .. 9999 ]
     $quarter  = $date->quarter;                     # [ 1 .. 4 ]

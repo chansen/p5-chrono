@@ -67,6 +67,15 @@ from_days(klass, value)
     RETVAL
 
 void
+from_object(klass, object)
+    SV *klass
+    SV *object
+  PREINIT:
+    dSTASH_CONSTRUCTOR_DURATION(klass);
+  CODE:
+    XSRETURN_SV(sv_2chrono_duration_coerce_sv(object));
+
+void
 days(self)
     const chrono_duration_t self
   ALIAS:
