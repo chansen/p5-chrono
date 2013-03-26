@@ -27,19 +27,21 @@ sub DateTime::__as_Chrono_Date {
 
 sub DateTime::__as_Chrono_Time {
     my ($dt) = @_;
-    return Chrono::Time->from_hms($dt->hour, $dt->minute, $dt->second, $dt->microsecond);
+    my (undef, $second_of_day, $nano_of_second) = $dt->local_rd_values;
+    my $microseonds = $second_of_day * 1_000_000 + int($nano_of_second / 1000);
+    return Chrono::Time->midnight->plus_microseconds($microseonds);
 }
 
 sub DateTime::__as_Chrono_DateTime {
     my ($dt) = @_;
-    my ($rdn, $second_of_day, $nsec) = $dt->local_rd_values;
+    my ($rdn, $second_of_day, $nano_of_second) = $dt->local_rd_values;
     my $epoch = ($rdn - 719163) * 86400 + $second_of_day;
-    return Chrono::DateTime->from_epoch($epoch, int($nsec / 1000));
+    return Chrono::DateTime->from_epoch($epoch, int($nano_of_second / 1000));
 }
 
 sub Chrono::DateTime::__as_DateTime {
-    my ($c) = @_;
-    return DateTime->from_object(object => $c)->set_time_zone('floating');
+    my ($dt) = @_;
+    return DateTime->from_object(object => $dt);
 }
 
 1;
